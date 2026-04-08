@@ -1,0 +1,161 @@
+{
+  "mult_vs_add": [
+    {
+      "trial": 0,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    },
+    {
+      "trial": 1,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    },
+    {
+      "trial": 2,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    },
+    {
+      "trial": 3,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    },
+    {
+      "trial": 4,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    },
+    {
+      "trial": 5,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    },
+    {
+      "trial": 6,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    },
+    {
+      "trial": 7,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    },
+    {
+      "trial": 8,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    },
+    {
+      "trial": 9,
+      "auc_mult": 1.0,
+      "auc_add": 1.0,
+      "f1_mult": 1.0,
+      "f1_add": 1.0
+    }
+  ],
+  "summary": {
+    "auc_mult": 1.0,
+    "auc_add": 1.0,
+    "f1_mult": 1.0,
+    "f1_add": 1.0
+  },
+  "vary_K": {
+    "2": {
+      "auc": 1.0,
+      "f1": 1.0
+    },
+    "3": {
+      "auc": 1.0,
+      "f1": 1.0
+    },
+    "5": {
+      "auc": 1.0,
+      "f1": 1.0
+    },
+    "7": {
+      "auc": 1.0,
+      "f1": 1.0
+    }
+  },
+  "vary_R": {
+    "0": {
+      "auc": 1.0,
+      "f1": 1.0
+    },
+    "1": {
+      "auc": 1.0,
+      "f1": 1.0
+    },
+    "5": {
+      "auc": 1.0,
+      "f1": 1.0
+    },
+    "10": {
+      "auc": 1.0,
+      "f1": 1.0
+    },
+    "20": {
+      "auc": 1.0,
+      "f1": 1.0
+    },
+    "50": {
+      "auc": 1.0,
+      "f1": 1.0
+    }
+  },
+  "threshold_sensitivity": {
+    "0.2": {
+      "precision": 0.9,
+      "recall": 1.0,
+      "f1": 0.9428571428571428
+    },
+    "0.3": {
+      "precision": 0.975,
+      "recall": 1.0,
+      "f1": 0.9857142857142858
+    },
+    "0.4": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "0.5": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "0.6": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "0.7": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "0.8": {
+      "precision": 1.0,
+      "recall": 0.9666666666666666,
+      "f1": 0.9800000000000001
+    }
+  }
+}
