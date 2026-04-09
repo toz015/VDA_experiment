@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from config import VDAConfig
-from datasets.who_and_when import load_who_and_when, trace_to_steps, WhoAndWhenTrace
+from vda_datasets.who_and_when import load_who_and_when, trace_to_steps, WhoAndWhenTrace
 from vda.discriminator import build_ensemble
 from vda.prompt import build_discriminator_prompt
 

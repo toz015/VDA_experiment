@@ -61,29 +61,27 @@ def load_who_and_when(subset: str = "Algorithm-Generated") -> List[WhoAndWhenTra
     return traces
 
 
-def trace_to_steps(trace: WhoAndWhenTrace):
-    """Convert a Who&When trace to a list of TraceStep objects for discriminators."""
-    from vda.discriminator import TraceStep
+def trace_to_steps(trace: WhoAndWhenTrace, max_tokens_per_prior_step: int = 500):
+    """Convert a Who&When trace to a list of vda.types.TraceStep objects."""
+    from vda.types import TraceStep
 
     steps = []
     for t in range(trace.T):
         h = trace.history[t]
-        # Build state = prefix context (all steps up to t)
-        context_parts = []
-        for prev_t in range(t + 1):
+        prior_parts = []
+        for prev_t in range(t):
             ph = trace.history[prev_t]
-            content = ph["content"][:500] if prev_t < t else ph["content"]
-            context_parts.append(f"--- Step {prev_t} ({ph['name']}) ---\n{content}")
-        state = "\n".join(context_parts[:-1]) if t > 0 else "(start of trace)"
+            content = ph["content"][:max_tokens_per_prior_step]
+            prior_parts.append(f"--- Step {prev_t} ({ph['name']}) ---\n{content}")
+        prior_context = "\n".join(prior_parts)
 
         step = TraceStep(
             t=t,
             agent_name=h["name"],
-            state=state,
             action=h["content"],
+            prior_context=prior_context,
             task_description=trace.question,
             ground_truth=trace.ground_truth,
-            total_steps=trace.T,
         )
         steps.append(step)
 
