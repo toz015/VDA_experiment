@@ -25,11 +25,11 @@ class WhoAndWhenTrace:
 
     def __post_init__(self):
         self.T = len(self.history)
-        self.agents = list(dict.fromkeys(h["name"] for h in self.history))
+        self.agents = list(dict.fromkeys(h["role"] for h in self.history))
         self.M = len(self.agents)
         self.agent_steps = {}
         for t, h in enumerate(self.history):
-            name = h["name"]
+            name = h["role"]
             if name not in self.agent_steps:
                 self.agent_steps[name] = []
             self.agent_steps[name].append(t)
@@ -50,7 +50,7 @@ def load_who_and_when(subset: str = "Algorithm-Generated") -> List[WhoAndWhenTra
         trace = WhoAndWhenTrace(
             trace_id=i,
             question=row["question"],
-            ground_truth=row["ground_truth"],
+            ground_truth=row["groundtruth"],
             history=row["history"],
             mistake_agent=row["mistake_agent"],
             mistake_step=int(row["mistake_step"]),
@@ -72,12 +72,12 @@ def trace_to_steps(trace: WhoAndWhenTrace, max_tokens_per_prior_step: int = 500)
         for prev_t in range(t):
             ph = trace.history[prev_t]
             content = ph["content"][:max_tokens_per_prior_step]
-            prior_parts.append(f"--- Step {prev_t} ({ph['name']}) ---\n{content}")
+            prior_parts.append(f"--- Step {prev_t} ({ph['role']}) ---\n{content}")
         prior_context = "\n".join(prior_parts)
 
         step = TraceStep(
             t=t,
-            agent_name=h["name"],
+            agent_name=h["role"],
             action=h["content"],
             prior_context=prior_context,
             task_description=trace.question,
