@@ -22,7 +22,7 @@ def build_discriminator_prompt(step: TraceStep) -> str:
         f"[TRACE CONTEXT (steps 0 to {step.t})]\n"
         f"{trace_context}\n"
         f"[TASK OUTCOME: FAILED. Ground truth: {step.ground_truth}]\n"
-        f'Question: Does the action at step {step.t} (by agent "{step.agent_name}") '
-        "contain an error that contributed to the task failure?\n"
+        f'Question: Is the action at step {step.t} (by agent "{step.agent_name}") '
+        "primarily responsible for the task failure — i.e., does it contain the root-cause error?\n"
         "Answer (A) Yes or (B) No."
     )
