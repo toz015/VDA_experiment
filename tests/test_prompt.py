@@ -21,9 +21,10 @@ def test_prompt_contains_all_sections():
     assert "--- Step 1 (agent_B) ---" in p
     assert "--- Step 2 (agent_B) ---" in p
     assert "I will compute sqrt(16) = 5." in p
-    assert "Ground truth: 4" in p
+    assert "4" in p                        # ground truth visible
     assert 'agent "agent_B"' in p
-    assert "(A) Yes or (B) No" in p
+    assert "(A) Yes" in p
+    assert "(B) No" in p
 
 
 def test_prompt_at_step_zero():

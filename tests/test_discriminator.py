@@ -28,10 +28,10 @@ def test_extract_probability_a_basic():
 
 
 def test_extract_matches_whitespace_and_case():
-    for token in ["A", " A", "a", " a"]:
-        entries = [_make_logprob_entry(token, -0.2), _make_logprob_entry("B", -0.8)]
+    for token in ["A", " A", "a", " a", "(A", "(A)"]:
+        entries = [_make_logprob_entry(token, -0.2), _make_logprob_entry("(B", -0.8)]
         p, fallback = extract_probability_a(entries)
-        assert 0.0 < p < 1.0
+        assert 0.0 < p < 1.0, f"failed for token={repr(token)}"
         assert fallback is False
 
 

@@ -27,9 +27,9 @@ from vda.prompt import build_discriminator_prompt
 
 
 def generate_for_trace(trace: WhoAndWhenTrace, discriminators, config: VDAConfig):
-    """Run KT queries for one trace. Returns theta_hat (K,T) and fallback counts (K,)."""
+    """Run KT queries for one trace. Returns theta_hat (K,T_action) and fallback counts (K,)."""
     steps = trace_to_steps(trace)
-    K, T = len(discriminators), trace.T
+    K, T = len(discriminators), trace.T_action
     theta = np.empty((K, T), dtype=np.float64)
 
     for k, disc in enumerate(discriminators):
@@ -105,16 +105,17 @@ def main():
             model_ids=np.array([d.id for d in discriminators]),
             fallback_counts=fb,
             mistake_agent=trace.mistake_agent,
-            mistake_step=trace.mistake_step,
+            mistake_step=trace.mistake_step_action,  # index in action-only steps
         )
 
         manifest["traces"] = [e for e in manifest.get("traces", []) if e["trace_id"] != trace.trace_id]
         manifest["traces"].append({
             "trace_id": trace.trace_id,
             "T": trace.T,
+            "T_action": trace.T_action,
             "agents": trace.agents,
             "mistake_agent": trace.mistake_agent,
-            "mistake_step": trace.mistake_step,
+            "mistake_step": trace.mistake_step_action,  # action-only index
             "fallback_counts": fb.tolist(),
         })
         with open(manifest_path, "w") as f:

@@ -16,7 +16,9 @@ def extract_probability_a(top_logprob_entries) -> Tuple[float, bool]:
     logprob_a = None
     logprob_b = None
     for e in top_logprob_entries:
-        key = e.token.strip().upper()
+        # Normalize: strip whitespace and surrounding parentheses so that
+        # "(A", "(A)", "A", "a" all resolve to "A", and similarly for "B".
+        key = e.token.strip().lstrip("(").rstrip(")").strip().upper()
         if key == "A" and logprob_a is None:
             logprob_a = e.logprob
         elif key == "B" and logprob_b is None:
