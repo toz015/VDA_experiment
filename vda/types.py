@@ -9,10 +9,12 @@ import numpy as np
 class TraceStep:
     t: int
     agent_name: str
-    action: str              # history[t]["content"], untruncated
-    prior_context: str       # "--- Step 0 (...) ---\n<content[:500]>\n..." up to step t-1
+    action: str              # history[t]["content"], untruncated raw content
+    prior_context: str       # formatted prior steps (structured or raw)
     task_description: str
     ground_truth: str
+    action_type: str = ""    # e.g. "execute", "search", "plan", "inform", ...
+    state: str = ""          # brief summary of what the step does/produces
 
 
 @dataclass
