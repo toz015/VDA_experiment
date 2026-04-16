@@ -3,3 +3,7 @@ datasets>=2.14
 openai>=1.0
 tqdm>=4.65
 pytest>=7.4
+
+# Google Cloud (install on VM only)
+# google-cloud-aiplatform>=1.38
+# vertexai>=1.38

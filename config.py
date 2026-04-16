@@ -1,12 +1,17 @@
 """Hyperparameters and defaults for VDA (matches Section 7 of the implementation note)."""
 
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Dict, Any
 
 
 @dataclass
 class VDAConfig:
-    # Discriminators (Stage 1: single model, K temperatures)
+    # Discriminators — list of {"provider", "model", "temperature", ...}
+    # When non-empty, K is derived from len(discriminators).
+    # When empty, falls back to legacy single-model mode.
+    discriminators: List[Dict[str, Any]] = field(default_factory=list)
+
+    # Legacy single-model config (used when discriminators list is empty)
     K: int = 3
     openai_model: str = "gpt-4o-mini"
     temperatures: List[float] = field(default_factory=lambda: [0.0, 0.7, 1.0])

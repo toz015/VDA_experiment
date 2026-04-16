@@ -6,6 +6,7 @@ def test_default_config_matches_note():
     assert cfg.K == 3
     assert cfg.openai_model == "gpt-4o-mini"
     assert cfg.temperatures == [0.0, 0.7, 1.0]
+    assert cfg.discriminators == []  # empty = legacy mode
     assert cfg.R == 15
     assert cfg.eta_0 == 0.3
     assert cfg.eta_p == 0.7

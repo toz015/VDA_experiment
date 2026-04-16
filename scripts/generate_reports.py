@@ -78,9 +78,8 @@ def main():
 
     manifest = {
         "subset": args.subset,
-        "model": config.openai_model,
-        "temperatures": config.temperatures,
-        "K": config.K,
+        "discriminators": [d.id for d in discriminators],
+        "K": len(discriminators),
         "eps": config.eps,
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "traces": [],
