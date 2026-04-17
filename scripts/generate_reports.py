@@ -4,6 +4,13 @@ For each trace, runs KT LLM calls and saves a .npz file with:
   - theta_hat: (K, T) numpy array, clipped to [eps, 1-eps]
   - model_ids: list of K strings
   - fallback_counts: (K,) int array of per-discriminator fallback events
+
+Usage:
+  # Vertex AI ensemble (gemini-2.0-flash, gemini-1.5-pro, gemini-1.5-flash)
+  python scripts/generate_reports.py --subset Hand-Crafted --limit 2
+
+  # Legacy OpenAI mode
+  python scripts/generate_reports.py --subset Hand-Crafted --limit 2 --legacy-openai
 """
 
 import argparse
@@ -25,15 +32,25 @@ from vda_datasets.who_and_when import load_who_and_when, trace_to_steps, WhoAndW
 from vda.discriminator import build_ensemble
 from vda.prompt import build_discriminator_prompt
 
+# Default Vertex AI ensemble: 3 diverse Gemini models
+VERTEX_ENSEMBLE = [
+    {"provider": "vertex", "model": "gemini-2.0-flash", "temperature": 0.0},
+    {"provider": "vertex", "model": "gemini-1.5-pro", "temperature": 0.0},
+    {"provider": "vertex", "model": "gemini-1.5-flash", "temperature": 0.0},
+]
 
-def generate_for_trace(trace: WhoAndWhenTrace, discriminators, config: VDAConfig):
+
+def generate_for_trace(trace: WhoAndWhenTrace, discriminators, config: VDAConfig,
+                       subset: str = ""):
     """Run KT queries for one trace. Returns theta_hat (K,T_action) and fallback counts (K,)."""
+    # Use classified steps if cache is available
+    trace.classify_steps(subset=subset)
+
     steps = trace_to_steps(trace)
     K, T = len(discriminators), trace.T_action
     theta = np.empty((K, T), dtype=np.float64)
 
     for k, disc in enumerate(discriminators):
-        start_fb = disc.fallback_count
         for t, step in enumerate(steps):
             prompt = build_discriminator_prompt(step)
             theta[k, t] = disc.query(prompt)
@@ -57,14 +74,28 @@ def main():
                         help="Skip traces whose .npz file already exists")
     parser.add_argument("--output-dir", default=None,
                         help="Defaults to data/reports/<subset>")
+    parser.add_argument("--legacy-openai", action="store_true",
+                        help="Use legacy OpenAI single-model mode instead of Vertex AI")
+    parser.add_argument("--project", default="llm-applications-490420",
+                        help="GCP project ID for Vertex AI")
+    parser.add_argument("--location", default="us-central1",
+                        help="GCP region for Vertex AI")
     args = parser.parse_args()
 
-    config = VDAConfig()
+    # Configure ensemble
+    if args.legacy_openai:
+        config = VDAConfig()
+    else:
+        discs = []
+        for spec in VERTEX_ENSEMBLE:
+            discs.append({**spec, "project": args.project, "location": args.location})
+        config = VDAConfig(discriminators=discs)
+
     out_dir = Path(args.output_dir) if args.output_dir else ROOT / "data" / "reports" / args.subset
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"Loading subset '{args.subset}'...")
-    traces = load_who_and_when(subset=args.subset)
+    print(f"Loading subset '{args.subset}' (action_only=False)...")
+    traces = load_who_and_when(subset=args.subset, action_only=False)
     print(f"Loaded {len(traces)} traces.")
 
     if args.trace_ids:
@@ -96,7 +127,7 @@ def main():
         if args.resume and out_path.exists() and trace.trace_id in existing_ids:
             continue
 
-        theta, fb = generate_for_trace(trace, discriminators, config)
+        theta, fb = generate_for_trace(trace, discriminators, config, subset=args.subset)
 
         np.savez(
             out_path,

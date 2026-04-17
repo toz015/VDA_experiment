@@ -1,0 +1,62 @@
+[
+  {
+    "agent": "assistant",
+    "action_type": "search",
+    "state": "Looking for martial arts classes near the New York Stock Exchange after work hours.",
+    "original_index": 0
+  },
+  {
+    "agent": "user",
+    "action_type": "identify",
+    "state": "Determining the location of the New York Stock Exchange.",
+    "original_index": 1
+  },
+  {
+    "agent": "assistant",
+    "action_type": "search",
+    "state": "Identifying martial arts schools near NYSE and checking class schedules.",
+    "original_index": 2
+  },
+  {
+    "agent": "assistant",
+    "action_type": "verify",
+    "state": "Checking class schedule for Anderson's Martial Arts Academy between 7-9 pm",
+    "original_index": 3
+  },
+  {
+    "agent": "user",
+    "action_type": "confirm",
+    "state": "Verifying class schedules for Anderson's Martial Arts Academy.",
+    "original_index": 4
+  },
+  {
+    "agent": "user",
+    "action_type": "verify",
+    "state": "Confirmed class schedules for Anderson's Martial Arts Academy.",
+    "original_index": 5
+  },
+  {
+    "agent": "user",
+    "action_type": "confirm",
+    "state": "Requesting verification of information and decision to end conversation.",
+    "original_index": 6
+  },
+  {
+    "agent": "user",
+    "action_type": "verify",
+    "state": "Checking distance and class schedules before proceeding.",
+    "original_index": 7
+  },
+  {
+    "agent": "user",
+    "action_type": "confirm",
+    "state": "Confirmed distance and class schedules for Anderson's Martial Arts Academy.",
+    "original_index": 8
+  },
+  {
+    "agent": "user",
+    "action_type": "terminate",
+    "state": "User is ending the current task or session.",
+    "original_index": 9
+  }
+]

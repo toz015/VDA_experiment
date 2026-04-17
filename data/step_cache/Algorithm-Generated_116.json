@@ -1,0 +1,62 @@
+[
+  {
+    "agent": "assistant",
+    "action_type": "extract",
+    "state": "Collecting zip codes of nonnative species locations from USGS data.",
+    "original_index": 0
+  },
+  {
+    "agent": "user",
+    "action_type": "verify",
+    "state": "Confirming nonnative species data for Amphiprion ocellaris from USGS database.",
+    "original_index": 1
+  },
+  {
+    "agent": "user",
+    "action_type": "inform",
+    "state": "User indicates no code to execute and suggests conversation management rules.",
+    "original_index": 2
+  },
+  {
+    "agent": "user",
+    "action_type": "suggest",
+    "state": "Propose a final confirmation by accessing the USGS database for verification.",
+    "original_index": 3
+  },
+  {
+    "agent": "assistant",
+    "action_type": "verify",
+    "state": "Conducting a manual check on species data and extracting zip codes.",
+    "original_index": 4
+  },
+  {
+    "agent": "assistant",
+    "action_type": "confirm",
+    "state": "Requesting agreement on verified findings before task completion.",
+    "original_index": 5
+  },
+  {
+    "agent": "user",
+    "action_type": "confirm",
+    "state": "User confirms verified findings and requests termination of the task.",
+    "original_index": 6
+  },
+  {
+    "agent": "user",
+    "action_type": "inform",
+    "state": "User indicates no code to execute and suggests conversation management rules.",
+    "original_index": 7
+  },
+  {
+    "agent": "user",
+    "action_type": "confirm",
+    "state": "Agreement on verified zip codes and task conclusion.",
+    "original_index": 8
+  },
+  {
+    "agent": "user",
+    "action_type": "terminate",
+    "state": "User is ending the current process or task.",
+    "original_index": 9
+  }
+]

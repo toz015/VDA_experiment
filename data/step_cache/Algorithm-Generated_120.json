@@ -1,0 +1,62 @@
+[
+  {
+    "agent": "assistant",
+    "action_type": "collect",
+    "state": "Gathering information to identify the highest rated Daniel Craig movie on Netflix.",
+    "original_index": 0
+  },
+  {
+    "agent": "user",
+    "action_type": "request",
+    "state": "Requesting a list of Daniel Craig movies under 150 minutes",
+    "original_index": 1
+  },
+  {
+    "agent": "assistant",
+    "action_type": "request",
+    "state": "Verify availability of Daniel Craig movies on Netflix (US)",
+    "original_index": 2
+  },
+  {
+    "agent": "user",
+    "action_type": "verify",
+    "state": "Checking availability of 'Road to Perdition' on Netflix US",
+    "original_index": 3
+  },
+  {
+    "agent": "user",
+    "action_type": "search",
+    "state": "Retrieved streaming availability for 'Road to Perdition'",
+    "original_index": 4
+  },
+  {
+    "agent": "user",
+    "action_type": "verify",
+    "state": "Checking availability of 'Enduring Love (2004)' on Netflix (US).",
+    "original_index": 5
+  },
+  {
+    "agent": "user",
+    "action_type": "search",
+    "state": "Retrieved streaming options for the movie 'Enduring Love'.",
+    "original_index": 6
+  },
+  {
+    "agent": "user",
+    "action_type": "verify",
+    "state": "Checking availability of 'The Mother (2003)' on Netflix (US)",
+    "original_index": 7
+  },
+  {
+    "agent": "user",
+    "action_type": "search",
+    "state": "User searched for streaming availability of 'The Mother' (2003).",
+    "original_index": 8
+  },
+  {
+    "agent": "user",
+    "action_type": "verify",
+    "state": "Checking availability of 'Infamous (2006)' on Netflix (US)",
+    "original_index": 9
+  }
+]

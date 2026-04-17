@@ -1,0 +1,446 @@
+[
+  {
+    "agent": "human",
+    "action_type": "request",
+    "state": "Inquiring about mailing costs for a DVD to Colombia.",
+    "original_index": 0
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "plan",
+    "state": "Outline the steps to find the cheapest shipping option for a DVD to Colombia.",
+    "original_index": 1
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Updated status on request satisfaction and next steps for gathering shipping rates.",
+    "original_index": 2
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "Look up shipping rates for mailing a DVD internationally.",
+    "original_index": 3
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "type",
+    "state": "Entered a search query for FedEx shipping rates",
+    "original_index": 4
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Instructing WebSurfer to look up DHL shipping rates.",
+    "original_index": 5
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "Look up shipping rates for mailing a DVD internationally.",
+    "original_index": 6
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 7
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Initiated calculation of shipping rates on FedEx website",
+    "original_index": 8
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "update",
+    "state": "Reviewed request status and outlined next steps for gathering shipping rates.",
+    "original_index": 9
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "Look up shipping rates for mailing a DVD internationally.",
+    "original_index": 10
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 11
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Instructing to look up USPS rates and address errors with FedEx and DHL.",
+    "original_index": 12
+  },
+  {
+    "agent": "Orchestrator (-> Assistant)",
+    "action_type": "request",
+    "state": "Look up USPS shipping rates and address errors with DHL and FedEx.",
+    "original_index": 13
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Notified about model mismatch in the system.",
+    "original_index": 14
+  },
+  {
+    "agent": "Assistant",
+    "action_type": "search",
+    "state": "Look up USPS shipping rates for international mailing",
+    "original_index": 15
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Updated on request status and next steps for shipping rate lookups.",
+    "original_index": 16
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "Look up shipping rates for mailing a DVD internationally.",
+    "original_index": 17
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 18
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "type",
+    "state": "Entered 'Hartford, Connecticut' in the dropdown field.",
+    "original_index": 19
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Updating on request status and next steps for shipping rates.",
+    "original_index": 20
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "look up shipping rates for mailing a DVD to Colombia",
+    "original_index": 21
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 22
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Selected Hartford, Connecticut for shipping rate calculation.",
+    "original_index": 23
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Updating on shipping request status and next steps for rate lookups.",
+    "original_index": 24
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "Look up USPS shipping rates for a DVD to Colombia.",
+    "original_index": 25
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 26
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "type",
+    "state": "Entered 'Colombia' in the address field for shipping rates",
+    "original_index": 27
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "update",
+    "state": "Reviewed progress and instructed WebSurfer to gather missing USPS rates.",
+    "original_index": 28
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "look up shipping rates for mailing a DVD to Colombia",
+    "original_index": 29
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 30
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Selected Colombia as the destination for shipping rates",
+    "original_index": 31
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Request for USPS shipping rates to proceed with task.",
+    "original_index": 32
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "Look up shipping rates for mailing a DVD internationally.",
+    "original_index": 33
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 34
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Navigated back to the previous webpage in the browser.",
+    "original_index": 35
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Requesting WebSurfer to find USPS shipping rates due to FedEx issues.",
+    "original_index": 36
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "replan",
+    "state": "Addressing model mismatch and adjusting plans accordingly.",
+    "original_index": 37
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "plan",
+    "state": "Assemble a team to find the cheapest shipping option for a DVD to Colombia.",
+    "original_index": 38
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "instruct",
+    "state": "Guide WebSurfer to gather shipping rates from USPS for mailing a DVD.",
+    "original_index": 39
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "navigate",
+    "state": "Access USPS site and input shipping details for DVD to Colombia.",
+    "original_index": 40
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 41
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "type",
+    "state": "Entered search query for USPS International Shipping Calculator",
+    "original_index": 42
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "update",
+    "state": "Reviewed progress on shipping rate retrieval and next steps for USPS.",
+    "original_index": 43
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "click",
+    "state": "Access the USPS calculator and input shipping details for a DVD.",
+    "original_index": 44
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 45
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Initiated price calculation for postage using the calculator",
+    "original_index": 46
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Instructing WebSurfer to input details for USPS shipping rates.",
+    "original_index": 47
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "input",
+    "state": "Gather shipping information for a DVD package to Colombia",
+    "original_index": 48
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 49
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Selected the 'International' option on the webpage.",
+    "original_index": 50
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Providing instructions for USPS rate lookup with specific details.",
+    "original_index": 51
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "input",
+    "state": "Gather shipping information for a DVD package to Colombia",
+    "original_index": 52
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 53
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Selected the 'International' option in the postage calculator.",
+    "original_index": 54
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "update",
+    "state": "Reviewed task status and identified need for WebSurfer to proceed with USPS price calculation.",
+    "original_index": 55
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "request",
+    "state": "Input details to retrieve shipping rates from USPS calculator.",
+    "original_index": 56
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 57
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "type",
+    "state": "Entered ZIP code '06101' in the form field.",
+    "original_index": 58
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "update",
+    "state": "Updated the ledger with shipping request status and next steps for USPS rates.",
+    "original_index": 59
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "request",
+    "state": "retrieve shipping options and rates for Colombia",
+    "original_index": 60
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 61
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Selected the destination country dropdown for postage calculation.",
+    "original_index": 62
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Requesting WebSurfer to complete USPS calculator for shipping rates.",
+    "original_index": 63
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "request",
+    "state": "Select Colombia and input package details for shipping options",
+    "original_index": 64
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 65
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Selected the input field for destination country",
+    "original_index": 66
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Providing instructions to retrieve shipping rates for USPS.",
+    "original_index": 67
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "replan",
+    "state": "The orchestrator is attempting to create a new plan due to a stall.",
+    "original_index": 68
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "plan",
+    "state": "Formulating a strategy to find the cheapest mailing option for a DVD to Colombia.",
+    "original_index": 69
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Providing instructions to gather USPS shipping rates.",
+    "original_index": 70
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "navigate",
+    "state": "Access USPS calculator and input shipping details for rate retrieval.",
+    "original_index": 71
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 72
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "type",
+    "state": "Entered search query for USPS postage calculator",
+    "original_index": 73
+  }
+]

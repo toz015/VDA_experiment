@@ -1,0 +1,122 @@
+[
+  {
+    "agent": "human",
+    "action_type": "ask",
+    "state": "inquire about a specific lyric from a song",
+    "original_index": 0
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "plan",
+    "state": "Outline steps to address user request about Michael Jackson's song lyrics.",
+    "original_index": 1
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Request to confirm Michael Jackson's sixth studio album before proceeding.",
+    "original_index": 2
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "look up Michael Jackson's sixth studio album",
+    "original_index": 3
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "type",
+    "state": "Searching for information about Michael Jackson's sixth studio album.",
+    "original_index": 4
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "update",
+    "state": "Reviewed request status and identified next steps for finding the fifth single.",
+    "original_index": 5
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "Look up the fifth single from 'Thriller' and confirm it.",
+    "original_index": 6
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 7
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "click",
+    "state": "Accessed the Wikipedia page for 'Thriller (album)'.",
+    "original_index": 8
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "update",
+    "state": "Identified album and single; next step is to find song lyrics.",
+    "original_index": 9
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "search",
+    "state": "find lyrics and identify specific word",
+    "original_index": 10
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 11
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "type",
+    "state": "Searched for 'Michael Jackson Human Nature lyrics' in the browser.",
+    "original_index": 12
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Updated progress on identifying the last word in the song lyrics.",
+    "original_index": 13
+  },
+  {
+    "agent": "Orchestrator (-> WebSurfer)",
+    "action_type": "extract",
+    "state": "Identify the last word before the second chorus in the lyrics.",
+    "original_index": 14
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "inform",
+    "state": "Indicating the next speaker in the sequence.",
+    "original_index": 15
+  },
+  {
+    "agent": "WebSurfer",
+    "action_type": "extract",
+    "state": "Identified the last word before the second chorus in a song.",
+    "original_index": 16
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "update",
+    "state": "Final output provided with the last word identified.",
+    "original_index": 17
+  },
+  {
+    "agent": "Orchestrator (thought)",
+    "action_type": "confirm",
+    "state": "The request has been successfully fulfilled.",
+    "original_index": 18
+  },
+  {
+    "agent": "Orchestrator (termination condition)",
+    "action_type": "terminate",
+    "state": "No agent selected, indicating completion of the scenario.",
+    "original_index": 19
+  }
+]

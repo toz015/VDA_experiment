@@ -1,0 +1,50 @@
+[
+  {
+    "agent": "assistant",
+    "action_type": "extract",
+    "state": "Gathering sales data for two homes in Pearl City, Hawaii.",
+    "original_index": 0
+  },
+  {
+    "agent": "user",
+    "action_type": "request",
+    "state": "Requesting sales data for two homes in Pearl City, Hawaii.",
+    "original_index": 1
+  },
+  {
+    "agent": "assistant",
+    "action_type": "gather",
+    "state": "Collecting recent sales data for specified homes in Pearl City, Hawaii.",
+    "original_index": 2
+  },
+  {
+    "agent": "user",
+    "action_type": "extract",
+    "state": "Extracting and verifying sales data for accuracy and comparison.",
+    "original_index": 3
+  },
+  {
+    "agent": "user",
+    "action_type": "terminate",
+    "state": "Task completed with verified sale price comparison.",
+    "original_index": 4
+  },
+  {
+    "agent": "user",
+    "action_type": "inform",
+    "state": "User indicates no code to execute and suggests conversation management rules.",
+    "original_index": 5
+  },
+  {
+    "agent": "user",
+    "action_type": "terminate",
+    "state": "Task verified and conditions met, concluding the process.",
+    "original_index": 6
+  },
+  {
+    "agent": "user",
+    "action_type": "terminate",
+    "state": "User is ending the current task or session.",
+    "original_index": 7
+  }
+]

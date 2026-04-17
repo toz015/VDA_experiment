@@ -1,0 +1,32 @@
+[
+  {
+    "agent": "assistant",
+    "action_type": "extract",
+    "state": "Extracting information from the provided PDF file to analyze applicants' qualifications.",
+    "original_index": 0
+  },
+  {
+    "agent": "user",
+    "action_type": "extract",
+    "state": "Extraction of job listing and related files completed successfully.",
+    "original_index": 1
+  },
+  {
+    "agent": "user",
+    "action_type": "verify",
+    "state": "Confirming accuracy of extracted applicants' data from the PDF file.",
+    "original_index": 2
+  },
+  {
+    "agent": "user",
+    "action_type": "terminate",
+    "state": "Process is concluded with no further additions needed.",
+    "original_index": 3
+  },
+  {
+    "agent": "user",
+    "action_type": "terminate",
+    "state": "User is ending the current process or task.",
+    "original_index": 4
+  }
+]
