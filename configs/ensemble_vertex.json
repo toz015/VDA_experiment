@@ -1,0 +1,25 @@
+{
+  "discriminators": [
+    {
+      "provider": "vertex",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.0,
+      "project": "llm-applications-490420",
+      "location": "us-central1",
+      "thinking_budget": 0
+    },
+    {
+      "provider": "vertex",
+      "model": "gemini-2.5-flash-lite",
+      "temperature": 0.0,
+      "project": "llm-applications-490420",
+      "location": "us-central1",
+      "thinking_budget": 0
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "temperature": 0.0
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "discriminators": [
+    {
+      "provider": "vertex_json",
+      "model": "gemini-3-flash-preview",
+      "project": "llm-applications-490420",
+      "location": "global",
+      "temperature": 0.2,
+      "max_output_tokens": 1024,
+      "thinking_budget": 0
+    },
+    {
+      "provider": "vertex_maas",
+      "model": "qwen/qwen3-next-80b-a3b-instruct-maas",
+      "project": "llm-applications-490420",
+      "location": "global",
+      "temperature": 0.2,
+      "max_completion_tokens": 1024
+    },
+    {
+      "provider": "vertex_maas",
+      "model": "openai/gpt-oss-120b-maas",
+      "project": "llm-applications-490420",
+      "location": "global",
+      "temperature": 0.2,
+      "max_completion_tokens": 1024
+    }
+  ]
+}

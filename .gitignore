@@ -9,3 +9,6 @@ __pycache__/
 # Raw FAMAS directory (archived as FAMAS.tar.gz instead)
 FAMAS (1)/
 FAMAS/
+logs/
+logs/
+logs/

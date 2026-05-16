@@ -8,7 +8,13 @@ from typing import List, Dict, Optional
 from dataclasses import dataclass, field
 
 # Legacy role-based filter (kept as fallback when no classification is available)
-ACTION_ROLES = frozenset({"WebSurfer", "Websurfer", "Assistant", "FileSurfer", "ComputerTerminal"})
+# - MagenticOne names (Hand-Crafted): WebSurfer/Assistant/FileSurfer/ComputerTerminal
+# - Algorithm-Generated two-agent dialog: lowercase "assistant" and "user" — both
+#   produce concrete actions in that format, so both count as action roles.
+ACTION_ROLES = frozenset({
+    "WebSurfer", "Websurfer", "Assistant", "FileSurfer", "ComputerTerminal",
+    "assistant", "user",
+})
 
 
 @dataclass
@@ -196,6 +202,41 @@ def trace_to_steps(trace: WhoAndWhenTrace, max_tokens_per_prior_step: int = 500)
         )
         steps.append(step)
 
+    return steps
+
+
+def trace_to_full_history_steps(trace: WhoAndWhenTrace, max_tokens_per_prior_step: int = 500):
+    """Method 4 step builder.
+
+    Candidate set = every message in trace.history (T_full).
+    Prior context for step t = only the action-role messages in history[:t],
+    rendered with raw content truncated to max_tokens_per_prior_step (same
+    legacy format Method 1 uses).
+
+    Step indices t refer to positions in the full history, so the saved
+    mistake_step target should be trace.mistake_step (no remapping).
+    """
+    from vda.types import TraceStep
+
+    steps = []
+    for t, h in enumerate(trace.history):
+        prior_parts = []
+        for prev_t in range(t):
+            ph = trace.history[prev_t]
+            if ph["role"] in ACTION_ROLES:
+                content = ph["content"][:max_tokens_per_prior_step]
+                prior_parts.append(f"--- Step {prev_t} ({ph['role']}) ---\n{content}")
+        prior_context = "\n".join(prior_parts)
+
+        step = TraceStep(
+            t=t,
+            agent_name=h["role"],
+            action=h["content"],
+            prior_context=prior_context,
+            task_description=trace.question,
+            ground_truth=trace.ground_truth,
+        )
+        steps.append(step)
     return steps
 
 

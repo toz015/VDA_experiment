@@ -1,0 +1,2027 @@
+{
+  "subset": "Algorithm-Generated",
+  "discriminators": [
+    "vertex_json/gemini-3-flash-preview@T=0.2",
+    "vertex_maas/qwen/qwen3-next-80b-a3b-instruct-maas@T=0.2",
+    "vertex_maas/openai/gpt-oss-120b-maas@T=0.2"
+  ],
+  "K": 3,
+  "eps": 1e-06,
+  "created_at": "2026-05-09T10:21:52",
+  "traces": [
+    {
+      "trace_id": 0,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 1,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataVerification_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 2,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "WebServing_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 3,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Probability_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 4,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "YouTubeDownload_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 5,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "PythonProgramming_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 6,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "ProblemSolving_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 7,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Geometry_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 8,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Tizin_Translation_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 9,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Narration_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 10,
+      "T": 5,
+      "T_action": 5,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "TextExtraction_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 11,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "AnimalBehavior_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 12,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Paintball_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 13,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Marathon_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 14,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Literary_Analysis_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 15,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "ScientificPaperAnalysis_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 16,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataAnalysis_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 17,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "AcademicPublication_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 18,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "BingAPI_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 19,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Validation_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 20,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Statistics_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 21,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Statistics_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 22,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "trace_id": 23,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Cubing_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "trace_id": 24,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataAnalysis_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        4
+      ]
+    },
+    {
+      "trace_id": 25,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        4
+      ]
+    },
+    {
+      "trace_id": 26,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Validation_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        4
+      ]
+    },
+    {
+      "trace_id": 27,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Lyrics_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "trace_id": 28,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Filmography_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "trace_id": 29,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "trace_id": 30,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant"
+      ],
+      "mistake_agent": "Mesopotamian_Number_Systems_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "trace_id": 31,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Validation_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "trace_id": 32,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "trace_id": 33,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "PythonDebugging_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        7
+      ]
+    },
+    {
+      "trace_id": 34,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "PythonDebugging_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        7
+      ]
+    },
+    {
+      "trace_id": 35,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "MartialArts_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        7
+      ]
+    },
+    {
+      "trace_id": 36,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Chess_Expert",
+      "mistake_step": 7,
+      "fallback_counts": [
+        0,
+        0,
+        7
+      ]
+    },
+    {
+      "trace_id": 37,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Reviews_Expert",
+      "mistake_step": 7,
+      "fallback_counts": [
+        0,
+        0,
+        7
+      ]
+    },
+    {
+      "trace_id": 38,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 6,
+      "fallback_counts": [
+        0,
+        0,
+        8
+      ]
+    },
+    {
+      "trace_id": 39,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "WomenInComputerScienceHistory_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        9
+      ]
+    },
+    {
+      "trace_id": 40,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataExtraction_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        9
+      ]
+    },
+    {
+      "trace_id": 41,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "FinancialData_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        10
+      ]
+    },
+    {
+      "trace_id": 42,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        11
+      ]
+    },
+    {
+      "trace_id": 43,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Culinary_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        11
+      ]
+    },
+    {
+      "trace_id": 44,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        12
+      ]
+    },
+    {
+      "trace_id": 45,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Validation_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        12
+      ]
+    },
+    {
+      "trace_id": 46,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "BiblicalScholar_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 47,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "PythonDebugging_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 48,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataVerification_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 49,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "PythonDebugging_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 50,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "HistoricalWeatherData_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 51,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Excel_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 52,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "BenAndJerrysFlavors_Expert",
+      "mistake_step": 6,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 53,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "FilmCritic_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 54,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Research_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 55,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Corporate_Governance_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 56,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataAnalysis_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 57,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "InformationVerification_Expert",
+      "mistake_step": 6,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 58,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Behavioral_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 59,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "VideoContentAnalysis_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 60,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 61,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Library_Database_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 62,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Federico_Lauria_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 63,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataVerification_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 64,
+      "T": 5,
+      "T_action": 5,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 65,
+      "T": 5,
+      "T_action": 5,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 66,
+      "T": 5,
+      "T_action": 5,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "PublicationData_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        13
+      ]
+    },
+    {
+      "trace_id": 67,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "SpeciesSightingsData_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 68,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "VideoContentAnalysis_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 69,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "VideoAnalysis_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 70,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "PythonDebugging_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 71,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 6,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 72,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Validation_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 73,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 74,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Geometry_Expert",
+      "mistake_step": 6,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 75,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 76,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataAnalysis_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 77,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "ModelEvaluation_Interpretation_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 78,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "API_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 79,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "MilitaryHistory_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 80,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "InformationExtraction_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 81,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "WebDevelopment_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 82,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "ArtHistory_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "trace_id": 83,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "ISBNCheckDigit_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        17
+      ]
+    },
+    {
+      "trace_id": 84,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "WebServing_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        17
+      ]
+    },
+    {
+      "trace_id": 85,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "CorporateHistory_IPOs_MondayCom_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        17
+      ]
+    },
+    {
+      "trace_id": 86,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Blu-Ray_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        17
+      ]
+    },
+    {
+      "trace_id": 87,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        17
+      ]
+    },
+    {
+      "trace_id": 88,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Music_Critic_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        17
+      ]
+    },
+    {
+      "trace_id": 89,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        17
+      ]
+    },
+    {
+      "trace_id": 90,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Locomotive_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        18
+      ]
+    },
+    {
+      "trace_id": 91,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "MusicTheory_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        18
+      ]
+    },
+    {
+      "trace_id": 92,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "AlgorithmDesign_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        18
+      ]
+    },
+    {
+      "trace_id": 93,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Data_Collection_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        18
+      ]
+    },
+    {
+      "trace_id": 94,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "PythonDebugging_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        18
+      ]
+    },
+    {
+      "trace_id": 95,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataExtraction_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        18
+      ]
+    },
+    {
+      "trace_id": 96,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Tickets_Pricing_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        19
+      ]
+    },
+    {
+      "trace_id": 97,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Poetry_Expert",
+      "mistake_step": 7,
+      "fallback_counts": [
+        0,
+        0,
+        19
+      ]
+    },
+    {
+      "trace_id": 98,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "JSON_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 99,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Polish_TV_Series_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 100,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "HawaiiRealEstate_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 101,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "PythonDebugging_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 102,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "WaybackMachine_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 103,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Debugging_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 104,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Data_Retrieval_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 105,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "WebServing_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 106,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Culinary_Awards_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 107,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataAnalysis_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 108,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 109,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Boggle_Board_Expert",
+      "mistake_step": 6,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 110,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Clinical_Trial_Data_Analysis_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 111,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Neurology_Expert",
+      "mistake_step": 9,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 112,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Vegan_Food_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        20
+      ]
+    },
+    {
+      "trace_id": 113,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "WikipediaHistory_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        21
+      ]
+    },
+    {
+      "trace_id": 114,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataVerification_Expert",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        21
+      ]
+    },
+    {
+      "trace_id": 115,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataVerification_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        22
+      ]
+    },
+    {
+      "trace_id": 116,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "GIS_DataAnalysis_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        22
+      ]
+    },
+    {
+      "trace_id": 117,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "DataAnalysis_Expert",
+      "mistake_step": 7,
+      "fallback_counts": [
+        0,
+        0,
+        22
+      ]
+    },
+    {
+      "trace_id": 118,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Debugging_Problem_Solving_Expert",
+      "mistake_step": 0,
+      "fallback_counts": [
+        0,
+        0,
+        22
+      ]
+    },
+    {
+      "trace_id": 119,
+      "T": 6,
+      "T_action": 6,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Verification_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        22
+      ]
+    },
+    {
+      "trace_id": 120,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Movie_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        23
+      ]
+    },
+    {
+      "trace_id": 121,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Church_Historian_Expert",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        23
+      ]
+    },
+    {
+      "trace_id": 122,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "MerriamWebsterWordOfTheDay_Historian_Expert",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        23
+      ]
+    },
+    {
+      "trace_id": 123,
+      "T": 7,
+      "T_action": 7,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "Research_Expert",
+      "mistake_step": 2,
+      "fallback_counts": [
+        0,
+        0,
+        23
+      ]
+    },
+    {
+      "trace_id": 124,
+      "T": 5,
+      "T_action": 5,
+      "agents": [
+        "assistant",
+        "user"
+      ],
+      "mistake_agent": "GameTheory_Expert",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        23
+      ]
+    },
+    {
+      "trace_id": 125,
+      "T": 10,
+      "T_action": 10,
+      "agents": [
+        "assistant"
+      ],
+      "mistake_agent": "WebServing_Expert",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        23
+      ]
+    }
+  ]
+}

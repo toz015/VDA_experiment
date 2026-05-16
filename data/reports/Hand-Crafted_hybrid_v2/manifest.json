@@ -1,0 +1,1155 @@
+{
+  "subset": "Hand-Crafted",
+  "discriminators": [
+    "vertex_json/gemini-3-flash-preview@T=0.2",
+    "vertex_maas/qwen/qwen3-next-80b-a3b-instruct-maas@T=0.2",
+    "vertex_maas/openai/gpt-oss-120b-maas@T=0.2"
+  ],
+  "K": 3,
+  "eps": 1e-06,
+  "created_at": "2026-04-30T18:00:59",
+  "traces": [
+    {
+      "trace_id": 0,
+      "T": 67,
+      "T_action": 67,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 1,
+      "T": 91,
+      "T_action": 91,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 9,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 2,
+      "T": 83,
+      "T_action": 83,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 3,
+      "T": 21,
+      "T_action": 21,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 15,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 4,
+      "T": 17,
+      "T_action": 17,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 12,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 5,
+      "T": 8,
+      "T_action": 8,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 6,
+      "T": 25,
+      "T_action": 25,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 7,
+      "T": 129,
+      "T_action": 129,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 8,
+      "T": 37,
+      "T_action": 37,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 9,
+      "T": 17,
+      "T_action": 17,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 16,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 10,
+      "T": 59,
+      "T_action": 59,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 11,
+      "T": 25,
+      "T_action": 25,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 12,
+      "T": 67,
+      "T_action": 67,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer",
+        "Orchestrator (-> ComputerTerminal)",
+        "ComputerTerminal",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 51,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 13,
+      "T": 44,
+      "T_action": 44,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 9,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 14,
+      "T": 123,
+      "T_action": 123,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "FileSurfer",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 15,
+      "T": 33,
+      "T_action": 33,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer"
+      ],
+      "mistake_agent": "FileSurfer",
+      "mistake_step": 32,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 16,
+      "T": 121,
+      "T_action": 121,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Assistant",
+      "mistake_step": 82,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 17,
+      "T": 32,
+      "T_action": 32,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 9,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 18,
+      "T": 51,
+      "T_action": 51,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 19,
+      "T": 29,
+      "T_action": 29,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 12,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 20,
+      "T": 113,
+      "T_action": 113,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 5,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 21,
+      "T": 130,
+      "T_action": 130,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Websurfer",
+      "mistake_step": 24,
+      "fallback_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "trace_id": 22,
+      "T": 130,
+      "T_action": 130,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 32,
+      "fallback_counts": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "trace_id": 23,
+      "T": 86,
+      "T_action": 86,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "trace_id": 24,
+      "T": 32,
+      "T_action": 32,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "trace_id": 25,
+      "T": 28,
+      "T_action": 28,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Assistant",
+      "mistake_step": null,
+      "fallback_counts": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "trace_id": 26,
+      "T": 20,
+      "T_action": 20,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Assistant",
+      "mistake_step": 16,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 27,
+      "T": 21,
+      "T_action": 21,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 20,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 28,
+      "T": 12,
+      "T_action": 12,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 6,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 29,
+      "T": 5,
+      "T_action": 5,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 1,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 30,
+      "T": 16,
+      "T_action": 16,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 12,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 31,
+      "T": 5,
+      "T_action": 5,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 32,
+      "T": 20,
+      "T_action": 20,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 18,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 33,
+      "T": 9,
+      "T_action": 9,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 34,
+      "T": 124,
+      "T_action": 124,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 39,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 35,
+      "T": 53,
+      "T_action": 53,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Websurfer",
+      "mistake_step": 12,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 36,
+      "T": 21,
+      "T_action": 21,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 37,
+      "T": 13,
+      "T_action": 13,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 12,
+      "fallback_counts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "trace_id": 38,
+      "T": 93,
+      "T_action": 93,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 32,
+      "fallback_counts": [
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "trace_id": 39,
+      "T": 5,
+      "T_action": 5,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": null,
+      "fallback_counts": [
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "trace_id": 40,
+      "T": 129,
+      "T_action": 129,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "trace_id": 41,
+      "T": 24,
+      "T_action": 24,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer"
+      ],
+      "mistake_agent": "FileSurfer",
+      "mistake_step": 4,
+      "fallback_counts": [
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "trace_id": 42,
+      "T": 31,
+      "T_action": 31,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 16,
+      "fallback_counts": [
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "trace_id": 43,
+      "T": 52,
+      "T_action": 52,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 3,
+      "fallback_counts": [
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "trace_id": 44,
+      "T": 17,
+      "T_action": 17,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "trace_id": 45,
+      "T": 40,
+      "T_action": 40,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 18,
+      "fallback_counts": [
+        0,
+        0,
+        4
+      ]
+    },
+    {
+      "trace_id": 46,
+      "T": 32,
+      "T_action": 32,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer",
+        "Orchestrator (-> ComputerTerminal)",
+        "ComputerTerminal",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 14,
+      "fallback_counts": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "trace_id": 47,
+      "T": 16,
+      "T_action": 16,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Assistant",
+      "mistake_step": 12,
+      "fallback_counts": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "trace_id": 48,
+      "T": 32,
+      "T_action": 32,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 29,
+      "fallback_counts": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "trace_id": 49,
+      "T": 129,
+      "T_action": 129,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "trace_id": 50,
+      "T": 19,
+      "T_action": 19,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": null,
+      "fallback_counts": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "trace_id": 51,
+      "T": 20,
+      "T_action": 20,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 12,
+      "fallback_counts": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "trace_id": 52,
+      "T": 49,
+      "T_action": 49,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 30,
+      "fallback_counts": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "trace_id": 53,
+      "T": 69,
+      "T_action": 69,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 50,
+      "fallback_counts": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "trace_id": 54,
+      "T": 106,
+      "T_action": 106,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (-> FileSurfer)",
+        "FileSurfer",
+        "Orchestrator (-> ComputerTerminal)",
+        "ComputerTerminal",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 22,
+      "fallback_counts": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "trace_id": 55,
+      "T": 74,
+      "T_action": 74,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 8,
+      "fallback_counts": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "trace_id": 56,
+      "T": 95,
+      "T_action": 95,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer",
+        "Orchestrator (-> Assistant)",
+        "Assistant",
+        "Orchestrator (termination condition)"
+      ],
+      "mistake_agent": "Orchestrator",
+      "mistake_step": 25,
+      "fallback_counts": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "trace_id": 57,
+      "T": 44,
+      "T_action": 44,
+      "agents": [
+        "human",
+        "Orchestrator (thought)",
+        "Orchestrator (-> WebSurfer)",
+        "WebSurfer"
+      ],
+      "mistake_agent": "WebSurfer",
+      "mistake_step": 12,
+      "fallback_counts": [
+        0,
+        0,
+        6
+      ]
+    }
+  ]
+}
