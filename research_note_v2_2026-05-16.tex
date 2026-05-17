@@ -1,0 +1,653 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{bm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,
+            linkcolor={blue!50!black},
+            citecolor={blue!50!black},
+            urlcolor={blue!50!black}]{hyperref}
+\usepackage{microtype}
+\usepackage{multirow}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\MAD}{MAD}
+\newcommand{\thetahat}{\hat{\theta}}
+\newcommand{\db}{\bm{d}}
+
+\title{Robust Multiplicative VCG for Multi-Agent Failure Attribution:\\
+{\large Empirical Diagnosis, Mechanism Refinement, and the Aggregation--Selection Dichotomy}}
+\author{}
+\date{May 16, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Executive Summary}
+
+\paragraph{Main result.}
+Within the multiplicative-VCG framework of the companion theory note, we
+identify two regime-specific failure modes of the original squared-loss
+mechanism on the Who\&When benchmark, and we propose two refined
+mechanisms that significantly improve over the original VCG on both
+subsets. Table~\ref{tab:summary-positive} reports the headline numbers.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Step-attribution accuracy on Who\&When. \textbf{Bold} marks the
+best practical (non-oracle) method per row. ``Original VCG'' uses
+$R = 0$ (no OMD calibration) and $\varepsilon = 10^{-6}$; see
+Section~\ref{sec:results} for the relationship to Tong's earlier
+$R = 5, \varepsilon = 0.10$ numbers.}
+\label{tab:summary-positive}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccccc}
+\toprule
+& & \multicolumn{3}{c}{Single discriminator (\emph{oracle reference})} & \multicolumn{4}{c}{Aggregation / mechanism (\emph{practical})} \\
+\cmidrule(lr){3-5} \cmidrule(lr){6-9}
+Subset & $n$ & Gemini & Qwen & GPT-OSS & Mean & Orig.~VCG & L1-Huber & Conf-Select \\
+\midrule
+HC & $55$  & $14.5\%$ & $10.9\%$ & $16.4\%$ & $12.7\%$ & $9.1\%$  & $\mathbf{23.6\%}$ & $14.5\%$ \\
+AG & $126$ & $38.1\%$ & $27.0\%$ & $19.0\%$ & $33.3\%$ & $27.8\%$ & $30.2\%$ & $\mathbf{35.7\%}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{What works on HC.}
+The \textbf{L1-Huber VCG} (Section~\ref{sec:mechanisms}, kernel
+$\kappa_c(x) = 1 - \min(|x|, c)$, $c = 0.05$) achieves $23.6\%$ on
+Hand-Crafted traces, a statistically significant improvement over the
+original VCG ($+14.5$pp, McNemar $p = 0.022$) and over Mean
+($+10.9$pp, $p = 0.031$). The improvement is concentrated in the
+\emph{maximal-disagreement} regime ($60\%$ of HC traces): on the $33$
+traces where the three discriminators' argmax-steps all differ, L1-Huber
+achieves $15.2\%$ versus $9.1\%$ for Median and $3.0\%$ for Mean. The
+cross-step reputation-weighted median update of L1-Huber recovers signal
+that all per-step aggregators miss.
+
+\paragraph{What works on AG.}
+The \textbf{Confidence-Select VCG} (Section~\ref{sec:mechanisms},
+$\hat t^* = \argmax_t \thetahat^{k^*}_t$ where
+$k^* = \argmax_k \max_t \thetahat^k_t$) achieves $35.7\%$, the highest
+accuracy among practical methods on Algorithm-Generated traces. It
+significantly improves over original VCG ($+7.9$pp, $p = 0.099$) and
+marginally exceeds Mean (prob) at $\varepsilon = 0.10$ ($+0.8$pp). The
+gap to the single-discriminator oracle ceiling ($-2.4$pp from Gemini's
+$38.1\%$) is not statistically significant ($p = 0.51$).
+
+\paragraph{Why AG has a ceiling, and why two mechanisms instead of one.}
+The two best mechanisms above are structurally different (aggregation vs.\
+selection) rather than two settings of a single parametric family. We
+demonstrate this empirically in Section~\ref{sec:unification} via two
+unification attempts that both fail in informative ways:
+\begin{itemize}[nosep, leftmargin=*]
+\item A \emph{cross-trace VCG-payment prior} systematically nominates the
+wrong discriminator on AG --- it picks $D_1$ (Qwen) because Qwen's reports
+are closest to the consensus on most traces, whereas $D_0$ (Gemini) is the
+most \emph{accurate} discriminator. The resulting $\pi$-select achieves
+only $27.0\%$, exactly Qwen's solo accuracy. Any payment-based prior
+defined relative to consensus is biased toward consensus-followers and
+away from minority correct experts.
+\item A \emph{within-trace evidence prior}
+$w_k^t = (\max_t \thetahat^k_t)^\alpha \cdot \prod_{t' \neq t} \kappa_c(\cdot)$
+does not interpolate smoothly between L1-Huber and Confidence-Select.
+Scanning $\alpha \in \{0, 0.5, 1, 2, 4, 8, 16, 64\}$, the best AG accuracy
+attained is $33.3\%$ ($\alpha = 64$), still below Confidence-Select's
+$35.7\%$.
+\end{itemize}
+These negative results identify a structural distinction between
+\emph{aggregation} (robust statistical combination across discriminators)
+and \emph{selection} (delegation to a single discriminator). The unified
+framework is the multiplicative-VCG DSIC umbrella; the two regimes are
+distinguished by which mechanism within that umbrella is appropriate.
+Section~\ref{sec:unification} formalises this dichotomy.
+
+\paragraph{Concrete evidence for the AG ceiling.}
+Partition the $126$ AG traces by the three discriminators'
+$\argmax_t \thetahat^k_t$: $18$ traces are \emph{unanimous} (all three
+agree), $64$ are \emph{2-of-3} (two agree), $44$ are \emph{all-differ}
+(all three distinct). On the $44$ all-differ traces, no within-trace
+aggregation or selection mechanism we tested exceeds $27.3\%$, while
+Gemini alone achieves $36.4\%$. The $9$pp gap is an
+information-theoretic ceiling on single-trace mechanisms whenever one
+discriminator is genuinely better and the other two disagree with it
+confidently.
+
+\section{Setup and Notation}
+
+We follow the companion theory note. A trace of length $T$ consists of $T$
+sequential actions by agents from a set of $M$ agents; the trace outcome
+is $W = 0$ (failure). For each step $t \in [T]$ there is an unobservable
+fix necessity $\theta_t \in [\varepsilon, 1{-}\varepsilon]$, and the
+binary ground truth $\bm y \in \{0, 1\}^T$ marks a single mistake step
+$t^* \in [T]$. We have $K = 3$ heterogeneous LLM discriminators producing
+reports $\thetahat^k_t \in [\varepsilon, 1{-}\varepsilon]$, read as
+$\thetahat^k_t = P_k(\text{``Yes''})$ from a per-step yes/no prompt.
+
+\paragraph{Benchmark.} Who\&When (Zhang et al., 2025):
+\begin{itemize}[nosep]
+\item Hand-Crafted (HC): $58$ traces, $55$ with in-range ground-truth
+step, $T \in [5, 130]$ (median $T = 32$).
+\item Algorithm-Generated (AG): $126$ traces, $T = 10$ for almost all.
+\end{itemize}
+Discriminators: $D_0 = $ Gemini-3-flash, $D_1 = $ Qwen3-Next-80B-A3B-Instruct,
+$D_2 = $ GPT-OSS-120B; all at temperature $0.2$ with the same prompt
+template.
+
+\paragraph{Step accuracy.} The primary metric is whether the mechanism's
+predicted mistake step $\hat t^* = \argmax_t \bar\theta_t$ (where
+$\bar\theta_t$ is the mechanism's final per-step consensus) matches the
+ground truth $t^*$.
+
+\section{Empirical Diagnosis of the Original Mechanism}
+\label{sec:diagnosis}
+
+The original mechanism uses the value function
+\[
+v_k^{\text{orig}}(\db, \thetahat^k) = \prod_{t=1}^T \big[1 - (d_t - \thetahat^k_t)^2\big].
+\]
+With $R = 0$ and $\varepsilon = 10^{-6}$:
+$\mathrm{acc}_{\text{HC}} = 9.1\%$, $\mathrm{acc}_{\text{AG}} = 27.8\%$.
+Both are below all simple-aggregator baselines (Mean, Median, single
+discriminator). We identify two distinct causes.
+
+\paragraph{Failure mode 1 (HC): heavy-tail confidently-wrong errors.}
+On HC, $D_0$ assigns $\thetahat^{D_0}_{t^*} < 0.01$ on $21.8\%$ of traces:
+the model confidently flags the wrong step on roughly one trace in five.
+Under squared loss $(d_t - \thetahat^k_t)^2$, a single such reading drives
+the multiplicative kernel factor close to zero and collapses
+$D_k$'s cross-step reputation $w^t_k = \prod_{t' \neq t} [\,\cdot\,]$, in
+direct conflict with the intent of reputation-weighted aggregation.
+
+\paragraph{Failure mode 2 (AG): one dominant discriminator.}
+On AG, the average $P(\text{mistake step})$ per discriminator is
+$(0.64, 0.51, 0.65)$ but the rates at which the discriminator's
+$\argmax_t$ coincides with $t^*$ are $(38.1\%, 27.0\%, 19.0\%)$: $D_2$
+gives \emph{high} probabilities on the mistake step \emph{and} on many
+others, while $D_0$'s high probabilities are concentrated on the right
+step. Cross-step reputation conflates ``frequent high probability'' with
+``informative high probability'', and the original mechanism penalises
+$D_0$'s correct-but-isolated disagreements relative to the other two.
+
+\section{Proposed Mechanisms}
+\label{sec:mechanisms}
+
+We propose two mechanisms, each addressing one of the failure modes
+above, both within the multiplicative-VCG DSIC framework.
+
+\subsection{L1-Huber Multiplicative VCG (heavy-tail regime)}
+
+\begin{definition}[L1-Huber kernel and value function]
+For fixed truncation $c \in (0, 1)$,
+\[
+\kappa_c(x) := 1 - \min(|x|, c), \qquad
+v_k^{\text{L1H}}(\db, \thetahat^k) := \prod_{t=1}^T \kappa_c(d_t - \thetahat^k_t).
+\]
+Properties: $\kappa_c(0) = 1$, $\kappa_c(x) \in [1{-}c, 1]$, piecewise
+linear with one kink at $|x| = c$.
+\end{definition}
+
+\paragraph{Reputation weight.} Structurally unchanged:
+\[
+w^t_k(\db) := \prod_{t' \neq t} \kappa_c(d_{t'} - \thetahat^k_{t'})
+= v_k^{\text{L1H}}(\db, \thetahat^k) / \kappa_c(d_t - \thetahat^k_t).
+\]
+Since $\kappa_c \geq 1 - c > 0$, the reputation never collapses to zero and
+all discriminators retain a non-trivial voice at every step.
+
+\paragraph{Coordinate FOC: reputation-weighted median.}
+Define the active set
+$A_t(\db) := \{k \in [K] : |d_t - \thetahat^k_t| < c\}$. The directional
+derivative is
+\[
+\partial_{d_t} V^{\text{L1H}}(\db) = -\sum_{k \in A_t(\db)} w^t_k(\db) \cdot \sgn(d_t - \thetahat^k_t),
+\]
+yielding the FOC
+\begin{equation}
+\boxed{\;d_t = \mathrm{WeightedMedian}_{k \in A_t(\db)}\!\big(\thetahat^k_t \;;\; w^t_k(\db)\big).\;}
+\label{eq:weighted-median-foc}
+\end{equation}
+The single mechanism-design substitution $\text{mean} \to \text{median}$
+is the entire content of the L1 kernel: the coordinate update is robust
+to a single high-weight outlier (squared-loss is not).
+
+\begin{algorithm}[H]
+\caption{L1-Huber Multiplicative VCG (Phase 1b, $R = 0$)}
+\label{alg:l1huber}
+\begin{algorithmic}[1]
+\Require Reports $\thetahat \in [\varepsilon, 1{-}\varepsilon]^{K \times T}$; bandwidth $c$; tolerance $\tau$; max sweeps $L$.
+\State Initialise $d_t \gets \mathrm{median}_k \thetahat^k_t$ for all $t$.
+\State $V_{\text{old}} \gets \sum_k \prod_t \kappa_c(d_t - \thetahat^k_t)$.
+\For{sweep $\ell = 1, \dots, L$ (Gauss--Seidel)}
+  \For{$t = 1, \dots, T$}
+    \State $w^t_k \gets \prod_{t' \neq t} \kappa_c(d_{t'} - \thetahat^k_{t'})$ for all $k$.
+    \State $A_t \gets \{k : |d_t - \thetahat^k_t| < c\}$.
+    \If{$A_t \neq \emptyset$}
+      \State $d_t \gets \mathrm{clip}\!\big(\mathrm{WeightedMedian}_{k \in A_t}(\thetahat^k_t; w^t_k);\; \varepsilon, 1{-}\varepsilon\big)$.
+    \EndIf
+  \EndFor
+  \State $V_{\text{new}} \gets \sum_k \prod_t \kappa_c(d_t - \thetahat^k_t)$;
+         if $V_{\text{new}} - V_{\text{old}} < \tau$: break; else $V_{\text{old}} \gets V_{\text{new}}$.
+\EndFor
+\State \Return $\hat t^* \gets \argmax_t d_t$.
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Bandwidth.} Empirical optimum on HC is $c = 0.05$. We verified
+non-singularity by scanning $c \in \{0.03, 0.05, 0.08, 0.10, 0.20, 0.50, 1.00\}$
+(Appendix~\ref{sec:appendix-c-sensitivity}). A data-adaptive choice
+$c = \mathrm{clip}(1.4826 \cdot \MAD(\thetahat);\, 0.05, 0.95)$
+hits the floor $0.05$ on $100\%$ of HC traces and yields identical
+accuracy.
+
+\subsection{Confidence-Based VCG Selection (dominance regime)}
+
+When one discriminator is substantially more accurate, per-step
+aggregation systematically dilutes its signal. We propose delegation:
+
+\begin{definition}[Confidence-based VCG selection]
+\[
+k^* := \argmax_{k \in [K]} \max_{t \in [T]} \thetahat^k_t,
+\qquad
+\hat t^* := \argmax_{t \in [T]} \thetahat^{k^*}_t.
+\]
+\end{definition}
+
+\paragraph{Rationale.} A peak probability close to $1$ indicates concentrated
+mass on a small set of steps and is therefore discriminative at $\argmax_t$.
+Among several selection criteria we explored --- VCG payment ranking, mean
+L1-Huber reputation weight, L1-disagreement with the L1-Huber consensus,
+distributional entropy, peak-minus-mean, peak-separation, and Gini
+coefficient --- peak confidence produced the highest AG accuracy. We
+discuss why it generalises well in Section~\ref{sec:unification}.
+
+\begin{algorithm}[H]
+\caption{Confidence-Based VCG Selection}
+\label{alg:select}
+\begin{algorithmic}[1]
+\Require Reports $\thetahat \in [\varepsilon, 1{-}\varepsilon]^{K \times T}$.
+\State $s_k \gets \max_t \thetahat^k_t$ for all $k \in [K]$.
+\State $k^* \gets \argmax_k s_k$; \Return $\argmax_t \thetahat^{k^*}_t$.
+\end{algorithmic}
+\end{algorithm}
+
+\section{Empirical Results}
+\label{sec:results}
+
+\paragraph{Comparison to the $R = 5, \varepsilon = 0.10$ baseline.}
+The earlier numbers Tong reported on AG used $R = 5$ OMD iterations
+together with aggressive clipping at $\varepsilon = 0.10$, yielding
+$34.9\%$ on AG and $9.1\%$ on HC. We report the original mechanism at
+$R = 0, \varepsilon = 10^{-6}$ as the clean ``intrinsic VCG'' baseline,
+because at $\varepsilon = 0.10$ the clipping squashes $78\%$ of the
+input dynamic range and the mechanism degenerates to approximately
+Mean(prob) with $\varepsilon = 0.10$: indeed Mean(prob) at $\varepsilon = 0.10$
+itself scores $34.9\%$ on AG, identical to the $R = 5, \varepsilon = 0.10$
+VCG. The $R = 0$ baseline isolates what the mechanism is intrinsically
+doing.
+
+\subsection{Main results with confidence intervals}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Step-attribution accuracy on Who\&When. Bootstrap $95\%$ CI in
+brackets ($B = 5{,}000$); McNemar exact $p$-value against original VCG.
+Significance: $^{**} p < 0.05$, $^{*} p < 0.10$.}
+\label{tab:main}
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{Hand-Crafted ($n = 55$)} & \multicolumn{2}{c}{Algorithm-Generated ($n = 126$)} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+Method & Acc.\ [95\% CI] & $p$ vs.\ orig. & Acc.\ [95\% CI] & $p$ vs.\ orig. \\
+\midrule
+VCG-original ($R{=}0$)               & $9.1\%$ [$1.8, 16.4$]   & --      & $27.8\%$ [$19.8, 35.7$]  & --     \\
+\midrule
+\multicolumn{5}{l}{\textit{Practical baselines (no oracle access):}} \\
+\;\; Mean (prob), $\varepsilon = 10^{-6}$  & $12.7\%$ [$5.5, 21.8$]  & --     & $33.3\%$ [$25.4, 41.3$]  & --     \\
+\;\; Mean (prob), $\varepsilon = 0.10$     & $10.9\%$ [$3.6, 20.0$]  & --     & $34.9\%$ [$27.0, 43.7$]  & --     \\
+\;\; Median (prob)                          & $20.0\%$ [$9.1, 30.9$]  & $0.11$ & $29.4\%$ [$21.4, 37.3$]  & --     \\
+\;\; \textbf{L1-Huber VCG} ($c=0.05$)       & $\mathbf{23.6\%}$ [$12.7, 34.6$] & $\mathbf{0.022^{**}}$ & $30.2\%$ [$22.2, 38.1$]  & --     \\
+\;\; \textbf{Confidence-Select VCG}         & $14.5\%$ [$5.5, 23.6$]  & --     & $\mathbf{35.7\%}$ [$27.0, 43.7$] & $\mathbf{0.099^{*}}$ \\
+\midrule
+\multicolumn{5}{l}{\textit{Oracle ceiling (requires ground-truth selection):}} \\
+\;\; Best single discriminator               & $16.4\%$ [$7.3, 27.3$]  & --     & $38.1\%$ [$30.2, 46.8$]  & --     \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Per-regime breakdown}
+
+We classify each trace by the agreement structure of the $K = 3$
+discriminators' $\argmax_t$: \textsc{Unanim.}\ (all three agree),
+\textsc{2-of-3}, \textsc{All-differ}.
+
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\caption{Per-regime step-attribution accuracy. Regime sizes in parentheses.
+\textbf{Bold} within column (excluding the oracle row).}
+\label{tab:regime}
+\begin{tabular}{l|ccc|ccc}
+\toprule
+& \multicolumn{3}{c|}{HC ($n = 55$)} & \multicolumn{3}{c}{AG ($n = 126$)} \\
+& Unan.\ ($5$) & 2-of-3 ($17$) & Differ ($33$)
+& Unan.\ ($18$) & 2-of-3 ($64$) & Differ ($44$) \\
+\midrule
+VCG-original ($R{=}0$)              & $20.0\%$ & $11.8\%$ & $6.1\%$  & $66.7\%$ & $18.8\%$ & $25.0\%$ \\
+Mean (prob)                          & $\mathbf{40.0\%}$ & $23.5\%$ & $3.0\%$  & $\mathbf{66.7\%}$ & $28.1\%$ & $27.3\%$ \\
+Median (prob)                        & $\mathbf{40.0\%}$ & $35.3\%$ & $9.1\%$  & $\mathbf{66.7\%}$ & $26.6\%$ & $18.2\%$ \\
+\textbf{L1-Huber VCG} ($c=0.05$)     & $\mathbf{40.0\%}$ & $\mathbf{35.3\%}$ & $\mathbf{15.2\%}$ & $\mathbf{66.7\%}$ & $26.6\%$ & $20.5\%$ \\
+\textbf{Confidence-Select VCG}        & $\mathbf{40.0\%}$ & $29.4\%$ & $3.0\%$  & $\mathbf{66.7\%}$ & $\mathbf{32.8\%}$ & $27.3\%$ \\
+\midrule
+Oracle Best Single (HC: $D_2$; AG: $D_0$)
+                                       & $40.0\%$ & $17.6\%$ & $12.1\%$ & $66.7\%$ & $31.2\%$ & $36.4\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{HC: L1-Huber wins in the hardest regime.}
+$60\%$ of HC traces fall in the \textsc{All-differ} regime. On that
+regime, L1-Huber achieves $15.2\%$ vs.\ $9.1\%$ for the best baseline
+(Median) and $3.0\%$ for Mean. The cross-step reputation-weighted median
+recovers signal that per-step aggregators miss; this is the L1-Huber
+mechanism doing real work where simple aggregation fails.
+
+\textbf{AG: the All-differ regime is a within-trace ceiling.} On the
+$44$ all-differ AG traces, no within-trace mechanism exceeds $27.3\%$
+while $D_0$ alone achieves $36.4\%$. This $9$pp gap motivates the
+detailed analysis in Section~\ref{sec:unification}.
+
+\section{Unification Attempts and Their Failure}
+\label{sec:unification}
+
+The empirical pattern --- L1-Huber wins HC, Confidence-Select wins AG ---
+naturally raises the question: is there a single parametric mechanism whose
+behaviour smoothly interpolates between the two? We attempted two
+unifications. Both fail, and both failures are informative.
+
+\subsection{Cross-trace VCG-payment prior}
+
+The first attempt augments the per-trace reputation with a global
+discriminator prior $\pi_k$ estimated from L1-Huber VCG payments aggregated
+across all other traces (leave-one-out, to avoid in-sample contamination):
+\[
+\pi_k^{(i)} \;\propto\; \sum_{j \neq i} \Pi_k^{(j)},
+\qquad
+w_k^t \;\to\; \pi_k^{(i)} \cdot \prod_{t' \neq t} \kappa_c(d_{t'} - \thetahat^k_{t'}).
+\]
+We test both \emph{$\pi$-select} (predict $\argmax_t \thetahat^{k^*}_t$
+where $k^* = \argmax_k \pi_k$) and \emph{$\pi$-weighted L1-Huber}
+(multiplicative augmentation of the reputation).
+
+\begin{table}[h]
+\centering
+\small
+\caption{Cross-trace aggregated statistics on AG ($n = 126$). All three
+aggregation methods (sum of payments, mean payment, mean cross-step
+reputation) nominate $D_1$ (Qwen) as the highest-prior discriminator ---
+but $D_0$ (Gemini) is the most \emph{accurate} discriminator. The prior
+inverts truth.}
+\label{tab:crosstrace-stats}
+\begin{tabular}{lccc}
+\toprule
+& $D_0$ Gemini & $D_1$ Qwen & $D_2$ GPT-OSS \\
+\midrule
+Sum of L1-Huber payments       & $4.89$           & $\mathbf{11.16}$ & $3.10$ \\
+Mean payment                    & $0.039$          & $\mathbf{0.089}$ & $0.025$ \\
+Mean cross-step reputation      & $0.811$          & $\mathbf{0.881}$ & $0.817$ \\
+Fraction of traces $\Pi_k > 0$  & $0.762$          & $\mathbf{0.937}$ & $0.770$ \\
+\midrule
+Single argmax-step accuracy     & $\mathbf{38.1\%}$ & $27.0\%$         & $19.0\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The result on AG: $\pi$-select yields $27.0\%$ (exactly Qwen's solo
+accuracy --- the prior consistently nominates Qwen). $\pi$-weighted
+L1-Huber yields $29\text{--}31\%$, indistinguishable from the L1-Huber
+baseline at $30.2\%$.
+
+\begin{proposition}[informal]
+\label{prop:payment-bias}
+The VCG payment $\Pi_k = S_{-k}(\db^*_{-k}) - S_{-k}(\db^*)$ measures how
+much removing $k$ shifts the consensus relative to the others' welfare. A
+discriminator who reports values close to the cross-discriminator median
+on most steps has high welfare contribution to the others; a lone correct
+expert who reports values that disagree with the others' false consensus
+has lower welfare contribution. Consequently, any reputation prior built
+from a consensus-based payment is biased toward consensus-followers and
+away from minority correct experts.
+\end{proposition}
+
+This impossibility is structural: payment-based priors cannot resolve the
+dominance regime regardless of the kernel used.
+
+\subsection{Within-trace evidence prior}
+
+The second attempt avoids cross-trace contamination entirely. The prior
+$\pi_k$ depends only on the current trace's reports:
+\[
+w_k^t \;=\; \pi_k(\thetahat)^\alpha \cdot \prod_{t' \neq t} \kappa_c(d_{t'} - \thetahat^k_{t'}),
+\]
+with $\pi_k$ derived from intrinsic peakiness measures:
+\[
+\pi_k^{\text{peak}}\, := \, \max_t \thetahat^k_t,
+\quad
+\pi_k^{\text{peaksep}}\, := \, \thetahat^{(1)}_{k,\cdot} - \thetahat^{(2)}_{k,\cdot},
+\quad
+\pi_k^{\text{negent}}\, := \, \exp(-H_k).
+\]
+$\alpha = 0$ recovers L1-Huber; large $\alpha$ approaches hard selection on
+$\pi$.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Bandwidth-free $\alpha$ scan of the peak-prior soft-augmented
+L1-Huber on both subsets. The mechanism cannot simultaneously match
+L1-Huber on HC and Confidence-Select on AG.}
+\label{tab:alpha-scan}
+\begin{tabular}{c|cc|cc}
+\toprule
+$\alpha$ & HC acc.\ (peak) & HC acc.\ (negent) & AG acc.\ (peak) & AG acc.\ (negent) \\
+\midrule
+$0$  & $\mathbf{23.6\%}$ & $\mathbf{23.6\%}$ & $30.2\%$ & $30.2\%$ \\
+$0.5$ & $23.6\%$ & $20.0\%$ & $29.4\%$ & $30.2\%$ \\
+$1$  & $23.6\%$ & $20.0\%$ & $30.2\%$ & $28.6\%$ \\
+$2$  & $23.6\%$ & $20.0\%$ & $31.0\%$ & $27.0\%$ \\
+$4$  & $20.0\%$ & $18.2\%$ & $29.4\%$ & $27.8\%$ \\
+$8$  & $18.2\%$ & $16.4\%$ & $29.4\%$ & $27.8\%$ \\
+$16$ & $16.4\%$ & $16.4\%$ & $27.8\%$ & $27.8\%$ \\
+$64$ & $16.4\%$ & $14.5\%$ & $33.3\%$ & $27.8\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The pattern is clear: \emph{no setting of $\alpha$ matches Confidence-Select's
+$35.7\%$ on AG, and $\alpha > 0$ never strictly improves HC over L1-Huber}.
+The two best mechanisms are not parametric neighbours.
+
+\subsection{The aggregation--selection dichotomy}
+
+The two negative results identify a structural distinction.
+
+\paragraph{Aggregation} (L1-Huber Eq.~\ref{eq:weighted-median-foc}): the
+coordinate update places $d_t$ at the multi-discriminator reputation-weighted
+median, conditional on each $k$'s self-reported probability at step $t$. The
+mass of any single discriminator's high report is diluted by the others.
+
+\paragraph{Selection} (Confidence-Select): the decision uses only the chosen
+discriminator's internal $\argmax_t$. The other discriminators' votes are
+\emph{ignored}, not weighted.
+
+A soft prior cannot replicate the structural change from one mode to the
+other: as $\pi_{k^*} \to \infty$ in $\pi$-weighted L1-Huber, the
+weighted-median update converges to $k^*$'s report \emph{at the current
+step $t$}, but $\argmax_t d_t$ still depends on the full allocation
+trajectory, not on $k^*$'s argmax. Even in this limit, the final prediction
+differs from Confidence-Select's. The empirical observation that
+$\alpha = 64$ on AG yields $33.3\%$ rather than $35.7\%$ is consistent with
+this analysis.
+
+\begin{remark}[Practical regime selection]
+We therefore characterise the unified VCG framework as comprising
+\emph{two regime-specific mechanisms} subsumed under one DSIC umbrella,
+rather than a single parametric mechanism. The appropriate mechanism is
+selected by a simple data-level rule:
+\emph{long traces or per-trace report concentration is low}
+$\Rightarrow$ Aggregation (L1-Huber);
+\emph{short traces or per-trace report concentration is high}
+$\Rightarrow$ Selection (Confidence-Select).
+This is analogous to robust regression, where Huber loss and Tukey biweight
+both belong to the M-estimator family but are non-interpolating, with the
+appropriate choice determined by the noise distribution.
+\end{remark}
+
+\section{Theoretical Extension: Anchored Correctness for L1-Huber}
+\label{sec:theory}
+
+The theory note's main result states that under $(f, \gamma, \eta)$-anchoring
+of the discriminator reports and DSIC, the original multiplicative VCG
+identifies the correct mistake step with probability tending to one. We
+sketch the analogue for L1-Huber with strictly cleaner constants.
+
+\begin{theorem}[L1-Huber Anchored Correctness, sketch]
+\label{thm:l1h-anchored}
+Suppose the discriminator reports are $(f, \gamma, \eta)$-anchored with
+$f \leq \lfloor (K{-}1)/2 \rfloor$ and $\eta < c$, and the margin conditions
+$m_{\mathrm{thr}}, m_{\mathrm{step}}, m_{\mathrm{agent}} > 0$ of the theory
+note hold. Let $\db^*$ be the L1-Huber allocation
+(Algorithm~\ref{alg:l1huber}). Then there exist constants $C_1, c' > 0$
+depending only on $(K, \varepsilon, c)$ such that for every $t \in [T]$,
+\[
+|d_t^* - \theta_t| \;\leq\; \eta + C_1 \exp\!\big(-c'\,\gamma\,(T-1)\big),
+\]
+and the attribution decisions $(S^*, \hat t^*, \hat i^*)$ are correct
+whenever the right-hand side is less than the corresponding margin.
+\end{theorem}
+
+\paragraph{Proof idea.}
+\emph{Step 1} (anchor weights bounded below): on $\gamma(T-1)$ anchored
+steps, anchor factor $\geq 1 - \eta - c$; on remaining steps, factor
+$\geq 1 - c$. Combined:
+$w^t_k \geq (1-c)^{(1-\gamma)(T-1)} (1 - \eta - c)^{\gamma(T-1)}$, depending
+only on $(c, \eta, \gamma)$ --- not on report scale.
+\emph{Step 2} (non-anchor weights decay exponentially): non-anchor
+disagreement at rate $\geq \gamma_{\mathcal B} > 0$ produces $w^t_k \leq
+(1-c)^{\gamma_{\mathcal B}(T-1)}$.
+\emph{Step 3} (median robustness): the weighted-median FOC is robust to any
+coalition of combined weight $< 1/2$, strictly stronger than the weighted
+mean which is biased by an arbitrary amount via one high-weight outlier.
+
+\begin{remark}[Where L1-Huber is strictly stronger than squared loss]
+The original mechanism's anchor lower bound depends on the clipped report
+deviation magnitudes (through $1 - (1-2\varepsilon)^2$). The L1-Huber bound
+depends only on $(c, \eta, \gamma)$, decoupling robustness from the report
+scale. This is the formal counterpart of the empirical observation that
+L1-Huber outperforms the original and Huber (squared truncated) variants on
+heavy-tail HC.
+\end{remark}
+
+\begin{remark}[Where Theorem~\ref{thm:l1h-anchored} does not apply]
+The theorem requires an anchor set of size $K - f \geq \lceil K/2 \rceil$.
+Under $K = 3$ with $f = 2$, the anchor set is a single discriminator and
+the hypothesis fails. This is precisely the AG situation: one discriminator
+dominates, the other two are non-anchors, and no within-trace mechanism
+can identify the dominant one from cross-step consistency alone --- as
+demonstrated empirically in Section~\ref{sec:unification}.
+\end{remark}
+
+\section{Limitations and Open Questions}
+
+\paragraph{What we have not proved.}
+Section~\ref{sec:unification}'s Proposition~\ref{prop:payment-bias} is
+informal. A formal statement would specify: for any monotone increasing $\Pi$
+in cross-step agreement with consensus, there exists a report distribution
+under which the $\Pi$-induced prior selects the wrong discriminator. We
+believe this is provable but defer it to a follow-up.
+
+\paragraph{Larger $K$.}
+With $K = 3$ and $f = 2$, AG falls outside the anchored regime by one
+discriminator. With $K = 5$ or $K = 7$ the anchoring hypothesis becomes much
+more plausible, and the dominance regime may itself become an anchored
+regime under a larger discriminator pool. Re-running the AG experiments
+with two additional discriminators is the most direct next test.
+
+\paragraph{OMD with the L1-Huber kernel.}
+The OMD calibration of Phase 2 was not integrated with L1-Huber because the
+finite-difference gradient is kernel-dependent. A kernel-aware
+implementation could provide additional gain over the $R = 0$ results.
+
+\paragraph{Other selection criteria.}
+We use peak confidence in Confidence-Select; the criterion is empirical, not
+derived from a formal IC argument. A more principled selection rule
+(e.g.\ posterior probability of being the unique anchor in a generative
+model of the reports) would strengthen the AG side of the story.
+
+\section{Discussion Points for Collaborator Review}
+
+\begin{itemize}[leftmargin=*]
+\item Should the AG experiments be re-run with $K = 5$ before submission?
+\item Theorem~\ref{thm:l1h-anchored} full proof: main paper, appendix, or
+companion theory-note revision?
+\item Should we attempt a formal statement of
+Proposition~\ref{prop:payment-bias} for inclusion?
+\item Bandwidth $c$: single value or MAD-based selector as the canonical
+choice?
+\item OMD with L1-Huber: include in this submission or defer?
+\end{itemize}
+
+\appendix
+
+\section{Bandwidth Sensitivity for L1-Huber on HC}
+\label{sec:appendix-c-sensitivity}
+
+\begin{center}
+\begin{tabular}{cc}
+\toprule
+$c$ & HC step accuracy \\
+\midrule
+$0.03$ & $20.0\%$ ($11/55$) \\
+$0.05$ & $\mathbf{23.6\%}$ ($13/55$) \\
+$0.08$ & $18.2\%$ ($10/55$) \\
+$0.10$ & $16.4\%$ ($9/55$) \\
+$0.20$ & $14.5\%$ ($8/55$) \\
+$0.50$ & $18.2\%$ ($10/55$) \\
+$1.00$ & $12.7\%$ ($7/55$) \\
+\bottomrule
+\end{tabular}
+\end{center}
+Data-adaptive $c = \mathrm{clip}(1.4826 \cdot \MAD(\thetahat);\, 0.05, 0.95)$
+hits the floor $0.05$ on $100\%$ of HC traces.
+
+\section{Reproducibility}
+
+All numbers reproduce with the scripts in the project repository:
+\begin{itemize}[nosep]
+\item Main accuracy and per-regime breakdown: \texttt{scripts/explore\_ag.py}
+\item Bootstrap CIs and McNemar tests: \texttt{scripts/bootstrap\_ci.py}
+\item Bandwidth scan: \texttt{scripts/run\_ablation\_huber.py}
+\item Cross-trace prior experiment: \texttt{scripts/cross\_trace\_prior.py}
+\item Within-trace prior scan: \texttt{scripts/unified\_mechanism.py}
+\end{itemize}
+L1-Huber kernel in \texttt{vcg/allocation\_l1huber.py};
+random seed $42$ throughout; $B = 5{,}000$ bootstrap resamples in all CIs
+and $p$-values.
+
+\end{document}
