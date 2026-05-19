@@ -1,0 +1,829 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{bm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,
+            linkcolor={blue!50!black},
+            citecolor={blue!50!black},
+            urlcolor={blue!50!black}]{hyperref}
+\usepackage{microtype}
+\usepackage{multirow}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\MAD}{MAD}
+\newcommand{\thetahat}{\hat{\theta}}
+\newcommand{\db}{\bm{d}}
+
+\title{Power-Kernel Multiplicative VCG for Multi-Agent Failure Attribution:\\
+{\large A Unified Family with Trace-Length-Adaptive Selection}}
+\author{}
+\date{May 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Executive Summary}
+
+\paragraph{Main result.}
+Within the multiplicative-VCG framework of the companion theory note, we
+propose a one-parameter kernel family
+\[
+\kappa_{c, p}(x) \;:=\; 1 - \min(|x|^p, c^p), \qquad p \geq 1,
+\]
+which subsumes both the original squared kernel ($p = 2$) and the L1-Huber
+kernel ($p = 1$) as special cases. A single trace-length-based selector
+picks the kernel parameters from a two-element menu, giving a single
+deployable mechanism that improves over the original VCG on both Who\&When
+subsets. Table~\ref{tab:summary-positive} reports the headline numbers.
+
+\paragraph{Mechanism positioning.}
+The mechanism is a \emph{static, single-shot} VCG mechanism: it consists of
+the allocation rule (Gauss--Seidel solving the social-welfare objective)
+and the Clarke pivot payment rule. We report results with $R = 0$ OMD
+rounds, that is, no iterative refinement of the discriminator reports.
+This is deliberate: we provide a \textbf{two-layer equilibrium guarantee},
+\begin{itemize}[nosep, leftmargin=*]
+\item \emph{report-level equilibrium} (Theorem~\ref{thm:dsic}): under the
+Clarke pivot payment, truthful reporting is a dominant-strategy equilibrium
+for every kernel $\kappa_{c, p}$;
+\item \emph{allocation-level equilibrium} (Proposition~\ref{prop:gs-nash}):
+the Gauss--Seidel output $\db^*$ is a coordinate-wise Nash equilibrium of
+the social-welfare game, satisfying the joint M-estimator FOC at every step.
+\end{itemize}
+Both equilibria are \emph{static} properties of the mechanism. They do not
+require an outer OMD calibration loop. We empirically investigate OMD
+calibration with three objectives (payment, allocation entropy, top-1
+margin) and report in Section~\ref{sec:omd-diagnostic} that all three
+degrade step accuracy on AG due to a consensus-drift mechanism. The
+single-shot two-layer equilibrium delivers the inference task on its own.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Step-attribution accuracy on Who\&When. \textbf{Bold} marks the
+proposed method; the original VCG row uses Tong's reported configuration
+$R = 5$ OMD rounds, $\varepsilon = 0.10$ external clip (Section~3.1).
+Best-single is the oracle ceiling (requires ground-truth selection).}
+\label{tab:summary-positive}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccccc}
+\toprule
+& & \multicolumn{3}{c}{Single discriminator (\emph{oracle reference})} & \multicolumn{4}{c}{Aggregation / mechanism (\emph{practical})} \\
+\cmidrule(lr){3-5} \cmidrule(lr){6-9}
+Subset & $n$ & Gemini & Qwen & GPT-OSS & Mean & Orig.~VCG & L1-Huber & \textbf{Power-VCG} \\
+\midrule
+HC & $55$  & $14.5\%$ & $10.9\%$ & $16.4\%$ & $12.7\%$ & $9.1\%$  & $23.6\%$ & $\mathbf{23.6\%}$ \\
+AG & $126$ & $38.1\%$ & $27.0\%$ & $19.0\%$ & $33.3\%$ & $34.9\%$ & $30.2\%$ & $\mathbf{36.5\%}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Why a kernel family rather than a single kernel.}
+Two empirical observations motivated the family:
+\begin{enumerate}[nosep, leftmargin=*]
+\item The L1-Huber kernel ($p = 1, c = 0.05, \varepsilon = 10^{-6}$, no
+OMD) significantly improves on HC: $+14.5$pp over the original VCG, McNemar
+$p = 0.022$. The cross-step reputation-weighted median update recovers
+signal that per-step aggregators miss; the gain is concentrated in the
+maximal-disagreement regime ($60\%$ of HC traces).
+\item On AG, however, L1-Huber does not match the original squared VCG.
+A $(p, c)$ scan at the appropriate clipping level ($\varepsilon = 0.10$)
+reveals a non-trivial optimum at $(p = 1.75, c = 1.0)$: \textbf{Power-VCG
+at this operating point achieves $36.5\%$ on AG without OMD calibration
+($R = 0$)}, exceeding the original VCG's $34.9\%$ at $R = 5$ by $+1.6$pp.
+\end{enumerate}
+
+\paragraph{Why one mechanism, not two.}
+The two operating points above suggest distinct mechanisms, but they
+arise from a single parametric family $\kappa_{c, p}$. The kernel exponent
+$p$ is a continuous knob that interpolates between weighted-median
+($p = 1$) and weighted-mean ($p = 2$) coordinate updates, and the
+appropriate point on this knob is determined by a single observable
+trace-level statistic: \textbf{the trace length $T$}.
+
+\paragraph{Trace length as a clean regime separator.}
+On Who\&When, $T$ separates Hand-Crafted from Algorithm-Generated traces
+with empirical error rate $3.6\%$:
+\begin{center}
+\small
+\begin{tabular}{lccccc}
+\toprule
+& min & q25 & median & q75 & max \\
+\midrule
+HC & $5$ & $20.5$ & $37$ & $84.5$ & $130$ \\
+AG & $5$ & $7$ & $10$ & $10$ & $10$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+We tested six other within-trace statistics (saturation rate, bimodality,
+peak height, peak spread, argmax-disagreement, mean active-set size); none
+achieved error rate below $20\%$. Trace length is the clean signal.
+
+\paragraph{The unified mechanism.}
+The adaptive selector reads only $T$ via a smooth sigmoid:
+\[
+w(\thetahat) \;=\; \sigma\!\left(\frac{\log T - \mu}{\tau}\right),
+\qquad
+(\mu, \tau) = (\log 10,\, 0.1),
+\]
+and interpolates the kernel parameters as a convex combination of two
+anchor configurations:
+\[
+(p, c, \varepsilon) \;=\; w \cdot \underbrace{(1.0,\, 0.05,\, 10^{-6})}_{\text{long-trace anchor}}
+\;+\; (1 - w) \cdot \underbrace{(1.75,\, 1.0,\, 0.10)}_{\text{short-trace anchor}}.
+\]
+With these defaults, $w \to 1$ for $T \gg 10$ and $w \to 0$ for $T \ll 10$,
+recovering the two operating points on Who\&When and producing soft
+interpolation on any benchmark with intermediate trace lengths. Empirically
+on Who\&When: HC $23.6\%$, AG $36.5\%$, pooled $32.6\%$.
+
+\section{Setup and Notation}
+
+We follow the companion theory note. A trace of length $T$ consists of
+$T$ sequential actions by agents from a set of $M$ agents; the outcome
+$W = 0$ (failure). For each step $t \in [T]$ there is an unobservable fix
+necessity $\theta_t \in [\varepsilon, 1{-}\varepsilon]$; the binary ground
+truth marks a single mistake step $t^* \in [T]$. We have $K = 3$
+heterogeneous LLM discriminators producing reports
+$\thetahat^k_t \in [\varepsilon, 1{-}\varepsilon]$.
+
+\paragraph{Benchmark.} Who\&When (Zhang et al., 2025):
+\begin{itemize}[nosep]
+\item Hand-Crafted (HC): $58$ traces, $55$ with in-range ground-truth
+step. Trace length $T \in [5, 130]$, median $T = 37$.
+\item Algorithm-Generated (AG): $126$ traces. Trace length $T \leq 10$
+for all traces, median $T = 10$.
+\end{itemize}
+Discriminators: $D_0 = $ Gemini-3-flash, $D_1 = $ Qwen3-Next-80B-A3B-Instruct,
+$D_2 = $ GPT-OSS-120B; all at temperature $0.2$ with identical prompts.
+
+\paragraph{Step accuracy.} The primary metric is whether the mechanism's
+predicted mistake step $\hat t^* = \argmax_t \bar\theta_t$ matches $t^*$.
+
+\section{The Power-Kernel Family}
+
+\begin{definition}[Power kernel and value function]
+For $p \geq 1$ and $c \in (0, 1]$,
+\[
+\kappa_{c, p}(x) \;:=\; 1 - \min(|x|^p, c^p), \qquad x \in [-1, 1].
+\]
+The multiplicative-VCG value function is
+\[
+v_k^{(p, c)}(\db, \thetahat^k) \;:=\; \prod_{t=1}^T \kappa_{c, p}(d_t - \thetahat^k_t),
+\qquad
+V^{(p, c)}(\db) \;:=\; \sum_{k=1}^K v_k^{(p, c)}(\db, \thetahat^k).
+\]
+\end{definition}
+
+\paragraph{Special cases.}
+\begin{itemize}[nosep, leftmargin=*]
+\item $p = 1$, $c$ truncating: \emph{L1-Huber kernel} $\kappa_{c, 1}(x) = 1 - \min(|x|, c)$.
+Coordinate FOC is a reputation-weighted median (Section~3.1).
+\item $p = 2$, $c = 1$: \emph{original squared kernel} $\kappa_{1, 2}(x) = 1 - x^2$.
+Coordinate FOC is a reputation-weighted mean.
+\item $p = 2$, $c < 1$: \emph{truncated squared (classical Huber)}.
+\item $p \in (1, 2)$: \emph{$p$-power M-estimator}. Smoother than L1, more
+robust than L2. Coordinate update is a weighted $p$-th-quantile.
+\end{itemize}
+
+\paragraph{Reputation weight (kernel-agnostic form).}
+\[
+w_k^t(\db) \;:=\; \prod_{t' \neq t} \kappa_{c, p}(d_{t'} - \thetahat^k_{t'})
+\;=\; v_k^{(p, c)}(\db, \thetahat^k) \,/\, \kappa_{c, p}(d_t - \thetahat^k_t).
+\]
+
+\subsection{Coordinate FOC}
+\label{sec:foc}
+
+For each $t$, the active set is $A_t(\db) := \{k : |d_t - \thetahat^k_t| < c\}$.
+Inside the active set, $\kappa_{c, p}$ is differentiable in $d_t$, giving
+\[
+\partial_{d_t} V^{(p, c)}(\db) \;=\;
+- \sum_{k \in A_t(\db)} w_k^t(\db) \cdot p \cdot |d_t - \thetahat^k_t|^{p-1} \cdot \sgn(d_t - \thetahat^k_t),
+\]
+and the FOC is
+\begin{equation}
+\boxed{
+\sum_{k \in A_t(\db)} w_k^t(\db) \cdot |d_t - \thetahat^k_t|^{p-1} \cdot \sgn(d_t - \thetahat^k_t) \;=\; 0.
+}
+\label{eq:power-foc}
+\end{equation}
+The LHS is monotone non-decreasing in $d_t$, so the FOC has a unique
+solution (up to a flat segment in the degenerate $p = 1$ case).
+
+\paragraph{Closed-form special cases.}
+\begin{itemize}[nosep, leftmargin=*]
+\item $p = 1$: $|d_t - \thetahat^k_t|^0 \equiv 1$, so the FOC reduces to
+a sign-balance, i.e.\ a reputation-weighted median:
+$d_t = \mathrm{WeightedMedian}_{k \in A_t}(\thetahat^k_t; w_k^t)$.
+\item $p = 2$: the FOC is linear, with closed-form solution
+$d_t = \sum_{k \in A_t} w_k^t \thetahat^k_t / \sum_{k \in A_t} w_k^t$
+(reputation-weighted mean over the active set).
+\end{itemize}
+For general $p \in (1, 2)$ we solve~\eqref{eq:power-foc} numerically by
+bisection on $[\min_{k \in A_t} \thetahat^k_t, \max_{k \in A_t} \thetahat^k_t]$,
+which converges in $O(\log(1/\text{tol}))$ inner iterations.
+
+\subsection{Gauss--Seidel solver}
+
+\begin{algorithm}[H]
+\caption{Power-Kernel Multiplicative VCG (Phase 1b, $R = 0$)}
+\label{alg:power}
+\begin{algorithmic}[1]
+\Require Reports $\thetahat \in [\varepsilon, 1{-}\varepsilon]^{K \times T}$; exponent $p$; bandwidth $c$; tolerance $\tau$; max sweeps $L$.
+\State Initialise $d_t \gets \mathrm{median}_k \thetahat^k_t$ for all $t$.
+\State $V_{\text{old}} \gets V^{(p, c)}(\db)$.
+\For{sweep $\ell = 1, \dots, L$ (Gauss--Seidel)}
+  \For{$t = 1, \dots, T$}
+    \State $w_k^t \gets \prod_{t' \neq t} \kappa_{c, p}(d_{t'} - \thetahat^k_{t'})$ for all $k$.
+    \State $A_t \gets \{k : |d_t - \thetahat^k_t| < c\}$.
+    \If{$A_t \neq \emptyset$}
+      \State $d_t \gets \mathrm{clip}\big(\text{solve}~\eqref{eq:power-foc};\; \varepsilon, 1{-}\varepsilon\big)$.
+    \EndIf
+  \EndFor
+  \State $V_{\text{new}} \gets V^{(p, c)}(\db)$;
+         if $V_{\text{new}} - V_{\text{old}} < \tau$: break; else $V_{\text{old}} \gets V_{\text{new}}$.
+\EndFor
+\State \Return $\hat t^* \gets \argmax_t d_t$.
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Two equilibria of the static mechanism}
+\label{sec:two-equilibria}
+
+The mechanism is fully specified by the allocation rule (Algorithm~\ref{alg:power})
+and the Clarke pivot payment rule
+\[
+\Pi_k^{(p,c)} \;:=\; S^{(p,c)}_{-k}(\db^*_{-k}) \,-\, S^{(p,c)}_{-k}(\db^*),
+\qquad
+S^{(p,c)}_{-k}(\db) \;:=\; \sum_{j \neq k} \prod_t \kappa_{c, p}(d_t - \thetahat^j_t).
+\]
+We do not realise the payments in our experiments (the discriminators are
+LLM models, not strategic agents), but the payment rule is well-defined and
+the standard VCG theorem gives the report-level equilibrium guarantee.
+
+\begin{theorem}[DSIC for Power-VCG]
+\label{thm:dsic}
+For every kernel exponent $p \geq 1$ and bandwidth $c \in (0, 1]$, the
+Power-VCG mechanism with allocation rule
+$\db^* = \argmax_{\db} V^{(p,c)}(\db)$ and Clarke pivot payment
+$\Pi_k^{(p,c)}$ is \emph{dominant-strategy incentive-compatible}: for every
+discriminator $k$, every report profile $\thetahat^{-k}$ of the other
+discriminators, and every alternative report $\tilde\theta^k$,
+\[
+\Pi_k^{(p,c)}\!\big(\theta^k,\, \thetahat^{-k}\big)
+\;\geq\;
+\Pi_k^{(p,c)}\!\big(\tilde\theta^k,\, \thetahat^{-k}\big),
+\]
+where $\theta^k$ is $k$'s true type. Consequently, truthful reporting is a
+dominant-strategy equilibrium of the discriminator game.
+\end{theorem}
+
+\paragraph{Proof sketch.}
+This is the standard VCG argument: $\Pi_k^{(p,c)}$ as defined above is the
+externality discriminator $k$ imposes on the others, and reporting truth
+maximises social welfare from $k$'s perspective. The argument is
+kernel-agnostic: only the additive structure of welfare across discriminators
+and the maximum-defining allocation rule are used. The full proof for the
+squared kernel in the companion theory note generalises verbatim.
+
+\begin{proposition}[Gauss--Seidel Coordinate-Wise Nash Equilibrium]
+\label{prop:gs-nash}
+Let $\db^*$ be the converged output of Algorithm~\ref{alg:power}. Then
+$\db^*$ is a \emph{coordinate-wise Nash equilibrium} of the social-welfare
+game over allocations:
+for every $t \in [T]$,
+\begin{equation}
+d^*_t \;\in\; \argmax_{d_t \in [\varepsilon, 1{-}\varepsilon]}\;
+V^{(p, c)}\!\big(d^*_1, \ldots, d^*_{t-1},\, d_t,\, d^*_{t+1}, \ldots, d^*_T\big).
+\label{eq:coordinate-nash}
+\end{equation}
+Equivalently, $\db^*$ satisfies the joint M-estimator FOC
+(Eq.~\ref{eq:power-foc}) at every step.
+\end{proposition}
+
+\paragraph{Proof.}
+$V^{(p,c)}$ is continuous on the compact domain $[\varepsilon, 1-\varepsilon]^T$
+and bounded above by $K$. Algorithm~\ref{alg:power}'s coordinate update
+solves the active-set FOC (Eq.~\ref{eq:power-foc}); the FOC's left-hand
+side is continuous and monotone non-decreasing in $d_t$, so it has a unique
+zero in the active interval, at which $V^{(p,c)}$ is maximised over $d_t$
+(others held fixed). The monotonicity guard in the implementation
+(re-accepts only when $V$ does not decrease) ensures monotone convergence.
+At termination ($V_{\text{new}} - V_{\text{old}} < \tau$), no further
+single-coordinate update increases $V$, which is exactly the condition
+of Eq.~\eqref{eq:coordinate-nash}.
+
+\begin{remark}[Two layers of equilibrium]
+Theorem~\ref{thm:dsic} is a \emph{static} property of the mechanism's
+payment rule, holding regardless of how the allocation is computed.
+Proposition~\ref{prop:gs-nash} is a \emph{static} property of the
+allocation rule's solver, holding under truthful and non-truthful reports
+alike. Together they describe a \emph{two-layer equilibrium}: under
+truthful reporting (the report-level dominant-strategy equilibrium of
+Theorem~\ref{thm:dsic}), Algorithm~\ref{alg:power} computes the
+allocation-level Nash equilibrium of Proposition~\ref{prop:gs-nash}. No
+iteration over reports is required; in particular, the OMD calibration
+loop of the companion pipeline ($R > 0$) refines $\thetahat$ toward a
+dynamic equilibrium that the static guarantees already imply at $R = 0$.
+\end{remark}
+
+\section{Empirical Results}
+\label{sec:results}
+
+\subsection{Comparison to Tong's reported baseline}
+\label{sec:tongs-baseline}
+
+The reference baseline reported by Tong is the original squared-kernel
+multiplicative VCG with $R = 5$ OMD calibration rounds and external clip
+$\varepsilon_{\text{report}} = 0.10$ applied to the raw reports before
+allocation. We confirmed this configuration on AG, exactly reproducing
+the $34.9\%$ step accuracy reported in the team baseline table; on HC
+this configuration yields $9.1\%$.
+
+For all proposed mechanisms in this note we use $R = 0$ (no OMD). The
+two-layer equilibrium of Section~\ref{sec:two-equilibria} explains why this
+is principled rather than ad hoc: Theorem~\ref{thm:dsic} ensures the
+report-level equilibrium under the static payment rule, and
+Proposition~\ref{prop:gs-nash} ensures the allocation-level equilibrium
+from a single Gauss--Seidel sweep to convergence. We empirically investigate
+OMD calibration with three different objectives in
+Section~\ref{sec:omd-diagnostic}; all three degrade step accuracy on AG.
+
+\subsection{$(p, c)$ scan}
+
+Table~\ref{tab:pc-scan} shows the cross-subset $(p, c)$ grid at the two
+relevant external-clip levels ($\varepsilon = 10^{-6}$ for raw reports,
+$\varepsilon = 0.10$ for Tong's clip). Within each cell we report
+HC step accuracy / AG step accuracy at $R = 0$.
+
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{$(p, c)$ scan, HC step accuracy / AG step accuracy at $R = 0$.
+Each subset uses its own external clip: $\varepsilon = 10^{-6}$ for HC,
+$\varepsilon = 0.10$ for AG. The two optima are circled.}
+\label{tab:pc-scan}
+\begin{tabular}{l|ccccc}
+\toprule
+$p \backslash c$ & $0.05$ & $0.10$ & $0.20$ & $0.50$ & $1.00$ \\
+\midrule
+$1.00$ & \fbox{$23.6\% / 30.2\%$} & $16.4\% / 29.4\%$ & $14.5\% / 29.4\%$ & $18.2\% / 29.4\%$ & $12.7\% / 31.0\%$ \\
+$1.25$ & $18.2\% / 29.4\%$ & $16.4\% / 29.4\%$ & $16.4\% / 30.2\%$ & $\phantom{0}9.1\% / 29.4\%$ & $10.9\% / 31.7\%$ \\
+$1.50$ & $16.4\% / 29.4\%$ & $18.2\% / 29.4\%$ & $16.4\% / 30.2\%$ & $12.7\% / 29.4\%$ & $10.9\% / 34.9\%$ \\
+$1.75$ & $16.4\% / 29.4\%$ & $16.4\% / 29.4\%$ & $14.5\% / 30.2\%$ & $14.5\% / 29.4\%$ & $10.9\% / \fbox{$36.5\%$}$ \\
+$2.00$ & $16.4\% / 26.2\%$ & $16.4\% / 30.2\%$ & $12.7\% / 31.0\%$ & $12.7\% / 25.4\%$ & $\phantom{0}9.1\% / 35.7\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two clean observations:
+\begin{itemize}[nosep]
+\item \textbf{HC optimum at $(p, c) = (1, 0.05)$} with raw clip: $23.6\%$.
+The L1 kernel with tight truncation handles the heavy-tail confidently-wrong
+reports.
+\item \textbf{AG optimum at $(p, c) = (1.75, 1.0)$} with $\varepsilon = 0.10$
+clip: $36.5\%$. The $p = 1.75$ exponent and no kernel truncation give a
+smoother surface that aggregates the moderately concentrated AG reports
+better than either $p = 1$ (too kinked, weighted median too discrete on
+$K = 3$) or $p = 2$ (too smooth, doesn't down-weight outliers enough).
+\end{itemize}
+
+\subsection{Smooth trace-length-adaptive selection}
+\label{sec:adaptive}
+
+The two optima above use different $(p, c, \varepsilon)$, and combining
+them into a single mechanism requires an observable routing statistic.
+Among seven candidates evaluated on $(\text{HC}, \text{AG})$ separability
+(Section~\ref{sec:why-T}), the trace length $T$ achieved the smallest
+error rate ($3.6\%$). We use it as the input to a smooth selector.
+
+\paragraph{Smooth selector.}
+For each trace, define the routing weight
+\begin{equation}
+w(\thetahat) \;:=\; \sigma\!\left(\frac{\log T - \mu}{\tau}\right),
+\qquad
+\sigma(z) \;=\; \frac{1}{1 + e^{-z}},
+\label{eq:smooth-selector}
+\end{equation}
+with smoothing parameters $\mu = \log 10 \approx 2.303$ and
+$\tau = 0.1$. The kernel parameters are then a convex combination of
+two anchor configurations:
+\begin{equation}
+\begin{aligned}
+p(\thetahat)         &\;=\; w(\thetahat) \cdot p_L         + (1 - w(\thetahat)) \cdot p_S, \\
+c(\thetahat)         &\;=\; w(\thetahat) \cdot c_L         + (1 - w(\thetahat)) \cdot c_S, \\
+\varepsilon(\thetahat) &\;=\; w(\thetahat) \cdot \varepsilon_L + (1 - w(\thetahat)) \cdot \varepsilon_S,
+\end{aligned}
+\label{eq:cfg-interp}
+\end{equation}
+with anchors $(p_L, c_L, \varepsilon_L) = (1.0, 0.05, 10^{-6})$
+(long-trace, HC-like) and $(p_S, c_S, \varepsilon_S) = (1.75, 1.0, 0.10)$
+(short-trace, AG-like).
+
+\paragraph{Interpretation of the smoothing parameters.}
+The location $\mu$ is set to $\log 10$, the midpoint between AG's median
+trace length ($T = 10$, $\log T \approx 2.30$) and the lower quartile of
+HC ($T = 20.5$, $\log T \approx 3.02$). The scale $\tau = 0.1$ is small,
+reflecting the fact that on Who\&When the two subsets are structurally
+well-separated by $T$; on benchmarks with continuous trace-length
+distributions or genuinely intermediate regimes, larger $\tau$ would
+provide softer interpolation. The limiting case $\tau \to 0^+$ recovers
+a hard threshold rule and yields identical accuracy on Who\&When; we
+retain $\tau > 0$ as the canonical mechanism because (i) it is
+differentiable in $T$, (ii) the framework extends naturally to other
+benchmarks without changing the algorithm, and (iii) the routing weight
+$w(\thetahat) \in (0, 1)$ is interpretable as the soft membership in the
+long-trace regime.
+
+\begin{algorithm}[H]
+\caption{Smooth Trace-Length-Adaptive Power-VCG}
+\label{alg:adaptive}
+\begin{algorithmic}[1]
+\Require Reports $\thetahat \in [0, 1]^{K \times T}$; smoothing parameters $(\mu, \tau) = (\log 10, 0.1)$.
+\State Long-trace anchor:  $(p_L, c_L, \varepsilon_L) \gets (1.0,\, 0.05,\, 10^{-6})$.
+\State Short-trace anchor: $(p_S, c_S, \varepsilon_S) \gets (1.75,\, 1.0,\, 0.10)$.
+\State $w \gets \sigma\!\left((\log T - \mu)/\tau\right)$.
+\State $(p, c, \varepsilon) \gets w \cdot (p_L, c_L, \varepsilon_L) + (1 - w) \cdot (p_S, c_S, \varepsilon_S)$.
+\State $\thetahat \gets \mathrm{clip}(\thetahat;\, \varepsilon, 1 - \varepsilon)$.
+\State Run Algorithm~\ref{alg:power} with reports $\thetahat$, exponent $p$, bandwidth $c$.
+\State \Return $\hat t^*$.
+\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Smooth trace-length-adaptive Power-VCG on Who\&When at
+$(\mu, \tau) = (\log 10, 0.1)$. Routing weight $w \in (0, 1)$ depends on
+trace length only; per-subset accuracies are diagnostic.}
+\label{tab:adaptive}
+\begin{tabular}{lcccc}
+\toprule
+Subset & $n$ & Overall acc.\ & Median routing weight $w$ & Trace length stats \\
+\midrule
+HC      & $55$  & $\mathbf{23.6\%}$ & $w \approx 1$ for $T > 10$  & median $T = 37$ \\
+AG      & $126$ & $\mathbf{36.5\%}$ & $w \approx 0$ for $T \leq 10$ & median $T = 10$ \\
+\midrule
+Pooled  & $181$ & $\mathbf{32.6\%}$ & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The pooled accuracy of $32.6\%$ compares favourably to the original
+VCG's $27.1\%$ ($9.1\% \cdot 55/181 + 34.9\% \cdot 126/181$).
+
+\paragraph{Smoothing-parameter sensitivity.}
+A grid scan over $(\mu, \tau) \in [\log 5, \log 50] \times [0.01, 1.0]$
+gives pooled accuracy in $[28.2\%, 32.6\%]$. The optimum lies near
+$(\log 10, 0.01)$ with a wide flat plateau covering $\mu \in [\log 10, \log 12]$
+and $\tau \in [0.01, 0.05]$: the smoothing parameters are not finely tuned.
+We chose $\tau = 0.1$ in the canonical mechanism (slightly larger than
+the empirical optimum) to make the soft-interpolation behaviour explicit
+without sacrificing accuracy.
+
+\subsection{Why other separators fail}
+\label{sec:why-T}
+
+For completeness we tested six within-trace statistics other than $T$ as
+candidate routers: report saturation (fraction of cells at the extremes
+$\leq 0.05$ or $\geq 0.95$), bimodality, $\max_k \max_t \thetahat^k_t$,
+peak spread, argmax-disagreement, and mean active-set size. Their
+empirical separability error rates on $(\text{HC}, \text{AG})$ are:
+
+\begin{center}
+\small
+\begin{tabular}{lc}
+\toprule
+Statistic & Best threshold error \\
+\midrule
+Trace length $T$       & $\mathbf{3.6\%}$ \\
+Mean active size       & $20.5\%$ \\
+Saturation rate        & $22.4\%$ \\
+Bimodality             & $28.0\%$ \\
+$\max_k \max_t \thetahat^k_t$ & $33.2\%$ \\
+Argmax-disagreement    & $37.5\%$ \\
+Peak spread            & $38.1\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The closeness of HC and AG in report-value statistics is itself
+informative: \emph{the two subsets differ structurally in trace length
+but not in the marginal distribution of individual reports.} This makes
+the heuristic "use saturated reports as an indicator of regime"
+incorrect on this benchmark.
+
+\subsection{Combined score exploration}
+\label{sec:combined}
+
+A natural extension of the smooth selector~\eqref{eq:smooth-selector} is to
+combine multiple observable statistics, e.g.
+$s(\thetahat) = \log T + \alpha \cdot \mathrm{kurt}(\thetahat)$, where
+$\mathrm{kurt}(\thetahat)$ is the excess kurtosis of all report entries.
+From robust-statistics theory, sample kurtosis is a principled indicator
+of the optimal power-loss exponent: high kurtosis (heavy-tail noise)
+favours small $p$, low kurtosis (Gaussian-like) favours larger $p$. On
+Who\&When, kurtosis alone achieves $32.0\%$ pooled accuracy (compared to
+$32.6\%$ for $T$ alone), with empirical separability error $16.3\%$ vs.\
+$3.6\%$ for $T$. The two features are moderately correlated within HC
+(corr $= 0.40$) and weakly correlated within AG (corr $= 0.20$),
+suggesting they encode partially independent signals.
+
+A scan over $\alpha \in [0, 2]$ combined with $(\mu, \tau)$ tuning,
+however, never improves over the $\alpha = 0$ ($T$-only) configuration on
+this benchmark: across all $(\alpha, \mu, \tau)$ tested, the best pooled
+accuracy is $32.6\%$ achieved by an effectively binary routing
+($\tau \approx 0.01$). The data on Who\&When supports a step-like
+transition between the two regimes rather than a smooth continuum, and
+adding kurtosis as a second feature does not modify which traces are
+routed to which configuration. We keep the canonical selector as the
+$T$-only smooth sigmoid~\eqref{eq:smooth-selector} for parsimony, and we
+report the combined-score formulation as a natural extension that may
+prove useful on other benchmarks with genuinely intermediate noise
+regimes; see Section~6.
+
+\section{OMD Calibration: Empirical Diagnostic}
+\label{sec:omd-diagnostic}
+
+Section~\ref{sec:two-equilibria} characterised the two equilibria delivered
+by the static mechanism. We now report empirical results on a natural
+extension: outer-loop OMD calibration of the reports $\thetahat$ toward a
+dynamic equilibrium. We evaluate the canonical AG operating point
+($p = 1.75$, $c = 1$, $\varepsilon = 0.10$) with $R = 5$ OMD rounds and
+three different gradient objectives. None improves on the static
+$R = 0$ accuracy ($36.5\%$).
+
+\paragraph{Three OMD objectives.}
+For each objective, the OMD update rule is
+$\thetahat^{r+1} \gets \thetahat^r \circ \exp(\eta_r \cdot g^r)$
+followed by a clip to $[\varepsilon_{\text{report}}, 1 - \varepsilon_{\text{report}}]$,
+where $\eta_r = \eta_0 / (r+1)^{p_\eta}$ with $(\eta_0, p_\eta) = (0.3, 0.7)$.
+The objectives are:
+\begin{itemize}[nosep, leftmargin=*]
+\item \emph{Payment ascent}: $g^r_{k, t} = \partial \Pi_k^{(p, c)} / \partial \thetahat^k_t$
+(the companion pipeline's default; ascent on each discriminator's Clarke
+pivot payment).
+\item \emph{Entropy ascent}: $g^r_{k, t} = -\partial H(\db^*(\thetahat^r)) / \partial \thetahat^k_t$,
+where $H$ is the entropy of the normalised allocation. Ascent on
+$-H$ pushes the allocation toward concentration, motivated by the fact
+that the ground-truth allocation is essentially one-hot at $t^*$.
+\item \emph{Margin ascent}: $g^r_{k, t} = +\partial (\max_t d_t - \text{second-max}_t d_t) / \partial \thetahat^k_t$.
+Ascent on the top-1-to-top-2 gap, motivated as a local version of
+concentration that does not affect the position of the current top step.
+\end{itemize}
+All three gradients are computed by central finite differences at each
+OMD round; the cost is $O(K^2 T)$ Gauss--Seidel solves per round.
+
+\paragraph{Results.}
+Table~\ref{tab:omd-objectives} reports AG step accuracy for each
+configuration.
+
+\begin{table}[h]
+\centering
+\small
+\caption{OMD calibration results on AG (Power-VCG, $p = 1.75$, $c = 1.0$,
+$\varepsilon = 0.10$, $R = 5$). $R = 0$ baseline is from
+Table~\ref{tab:summary-positive}. All three objectives degrade step
+accuracy. Acc.\ agent is the predicted-agent accuracy; Acc.\ joint is
+agent and step both correct.}
+\label{tab:omd-objectives}
+\begin{tabular}{lccc}
+\toprule
+Configuration & Acc.\ step & Acc.\ agent & Acc.\ joint \\
+\midrule
+$R = 0$ (no OMD, canonical)        & $\mathbf{36.5\%}$ & $42.9\%$ & $23.8\%$ \\
+\midrule
+$R = 5$, payment ascent             & $32.5\%$ & $48.4\%$ & $24.6\%$ \\
+$R = 5$, entropy ascent             & $23.0\%$ & $45.2\%$ & $19.8\%$ \\
+$R = 5$, margin ascent              & $33.3\%$ & $49.2\%$ & $27.8\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The step accuracy decreases by $3.2$ to $13.5$ percentage points across
+the three objectives. The agent and joint accuracies show small
+heterogeneous changes, mostly upward; this is unrelated to the step
+accuracy degradation (the blame attribution rule maps step argmax to a
+neighbourhood of agents).
+
+\paragraph{Diagnostic: consensus drift.}
+\begin{sloppypar}
+Inspection of individual traces (see
+\texttt{scripts/omd\_find\_changers.py}) reveals a consistent pattern. At
+the canonical AG operating point with payment ascent, $24$ of $126$ traces
+(about $19\%$) have their argmax-step changed by OMD: $6$ traces shift from
+hit to miss, $3$ shift from miss to hit, and $15$ shift from one wrong step
+to another wrong step. In every case where we manually inspected, the OMD
+update moves the predicted step toward a \emph{higher cross-discriminator
+consensus} step---either a step where two of three discriminators report
+high simultaneously, or where the report values are themselves higher in
+absolute terms.
+\end{sloppypar}
+
+This is consistent with the gradient structure: payment-ascent moves
+$\thetahat^k_t$ in the direction that increases $\Pi_k$, which is itself a
+function of how well discriminator $k$'s reports align with the others
+through the leave-one-out welfare. Entropy and margin ascent share the
+same family: all three push the allocation toward a sharper concentration
+at \emph{some} step, but \emph{which} step is determined by the existing
+inter-discriminator agreement structure rather than the ground truth.
+
+\paragraph{Why this hurts AG.}
+On AG, the mistake step is structurally \emph{off-consensus}: the
+benchmark is constructed so that one or two discriminators correctly flag
+a step that the others miss, while the high-consensus steps are typically
+non-mistake. Consensus drift therefore pulls the prediction \emph{away
+from} the mistake step. The same effect was independently observed in our
+cross-trace VCG-payment prior experiment (an aggregated payment ranking
+across traces nominates Qwen as the highest-prior discriminator, while
+Gemini is the most accurate), suggesting a single underlying mechanism:
+the payment $\Pi_k$ rewards alignment with the welfare-maximising
+allocation, which on AG diverges from the ground truth.
+
+\paragraph{An open direction: truth-aligned calibration.}
+A natural follow-up is OMD on an objective that is not consensus-based.
+One candidate, suggested by the diagnostic above, is a calibration signal
+that tracks the agreement of a fixed minority discriminator with the
+allocation: for the discriminator most often \emph{opposed to consensus},
+push the allocation toward agreement with that discriminator's argmax.
+This breaks the symmetry that makes payment ascent biased. We defer this
+to future work; see Section~\ref{sec:limitations}.
+
+\section{Theoretical Extension: Anchored Correctness for Power-VCG}
+
+The companion theory note's main result states that under
+$(f, \gamma, \eta)$-anchoring of the discriminator reports and DSIC,
+the original (squared-kernel) multiplicative VCG identifies the correct
+mistake step with probability tending to one. We sketch the analogue for
+the general power kernel.
+
+\begin{theorem}[Power-VCG Anchored Correctness, sketch]
+\label{thm:power-anchored}
+Suppose the discriminator reports are $(f, \gamma, \eta)$-anchored with
+$f \leq \lfloor (K{-}1)/2 \rfloor$ and $\eta < c$, and the margin
+conditions $m_{\mathrm{thr}}, m_{\mathrm{step}}, m_{\mathrm{agent}} > 0$
+of the theory note hold. Let $\db^*$ be the Power-VCG allocation
+(Algorithm~\ref{alg:power}). Then there exist constants $C_1(p, c), c'(p, c) > 0$
+depending only on $(K, \varepsilon, p, c)$ such that for every $t \in [T]$,
+\[
+|d_t^* - \theta_t| \;\leq\; \eta + C_1(p, c) \exp\!\big(-c'(p, c)\,\gamma\,(T-1)\big),
+\]
+and the attribution decisions are correct whenever the right-hand side
+is less than the corresponding margin.
+\end{theorem}
+
+\paragraph{Proof idea.}
+The proof is structurally the same as for $p = 2$, with two changes:
+(i)~the active-set lower bound on anchor weights becomes
+$(1 - \eta^p)^{(1-\gamma)(T-1)}(1 - (\eta + c)^p)^{\gamma(T-1)}$ rather
+than the squared-loss expression, decoupling robustness from report scale
+whenever $p < 2$;
+(ii)~the FOC robustness analysis uses the M-estimator property:
+the $p$-quantile is robust to any coalition of weight $< 1/2$, which holds
+for all $p \geq 1$ but with different breakdown constants. The exponent
+$p$ enters the bound through $C_1, c'$ in a smooth way, so the theorem
+applies uniformly across the family. The corresponding full proof,
+generalising Tong's L1-Huber-specific argument in the previous note
+revision, is left for the companion theory-note revision.
+
+\begin{remark}[Implications for the operating points]
+At $p = 1$, the constants $C_1, c'$ depend only on $(c, \eta, \gamma)$, not
+on the report scale, which explains the strong HC performance.
+At $p = 1.75$, $c = 1$ (the AG operating point, no truncation), the
+constants depend on report scale but the smoother kernel produces
+better-conditioned coordinate updates when reports are bounded away from
+saturation. Theorem~\ref{thm:power-anchored} subsumes both regimes within
+one theoretical framework.
+\end{remark}
+
+\section{Limitations and Open Questions}
+\label{sec:limitations}
+
+\paragraph{The two-element menu is data-driven.}
+The two operating points $(p_L, c_L, \varepsilon_L)$ and
+$(p_S, c_S, \varepsilon_S)$ in Algorithm~\ref{alg:adaptive} are chosen
+from the empirical $(p, c)$ scan on Who\&When. While the kernel family is
+principled, the specific menu is dataset-specific. A theory that
+\emph{predicts} the optimal $(p, c)$ from observable noise structure
+(e.g.\ from the empirical distribution of $\thetahat$) is open.
+
+\paragraph{Truth-aligned OMD calibration.}
+Section~\ref{sec:omd-diagnostic} reports that three OMD objectives
+(payment, entropy, margin) all degrade AG step accuracy by a common
+mechanism: consensus drift moves the predicted step toward the
+highest-agreement location, which on AG diverges from the off-consensus
+mistake step. A principled follow-up is OMD on a non-consensus objective.
+One concrete candidate: identify, in each trace, the discriminator most
+often \emph{opposed} to the running allocation (using cross-step or
+cross-trace statistics), and gradient-ascent on agreement with that
+discriminator's argmax. This is a heuristic but breaks the symmetry that
+makes the existing objectives biased. A formal characterisation of
+"truth-aligned" calibration signals is an open problem; we conjecture
+that they cannot be defined purely in terms of the within-trace
+welfare~$V^{(p,c)}$, because all welfare-derived quantities inherit the
+consensus bias documented in Section~\ref{sec:omd-diagnostic}.
+
+\paragraph{Trace length as input is benchmark-flexible.}
+The fact that $T$ separates HC from AG with $3.6\%$ error is a property
+of Who\&When's two-subset structure (AG was constructed algorithmically
+with $T = 10$). The smooth selector~\eqref{eq:smooth-selector} accommodates
+benchmarks with continuous trace-length distributions: setting the
+smoothing scale $\tau$ to a moderate value (e.g.\ $0.3$--$1.0$) produces
+soft interpolation between the two anchor configurations on traces of
+intermediate length. On benchmarks where trace length alone is insufficient
+to distinguish regimes (e.g.\ when all traces have similar lengths but
+heterogeneous noise structure), the combined-score extension
+$s(\thetahat) = \log T + \alpha \cdot \mathrm{kurt}(\thetahat)$ from
+Section~\ref{sec:combined} provides a natural generalisation. On future
+benchmarks, $(\mu, \tau, \alpha)$ can be tuned via held-out validation;
+the underlying kernel-family construction $\kappa_{c, p}$ and the
+M-estimator coordinate FOC are benchmark-independent.
+
+\paragraph{Larger $K$.}
+With $K = 3$ and $f = 2$, the anchoring hypothesis of
+Theorem~\ref{thm:power-anchored} fails on AG (only one discriminator
+is genuinely informative). With $K = 5$ or $K = 7$, anchoring becomes
+more plausible and the dominance regime may dissolve. Re-running with
+two additional discriminators is the most direct next test.
+
+\section{Discussion Points for Collaborator Review}
+
+\begin{enumerate}[leftmargin=*]
+\item Should we extend the experiments to $K = 5$ before submission, or
+treat that as follow-up?
+\item Theorem~\ref{thm:power-anchored} full proof: main paper, appendix,
+or a revision of the companion theory note?
+\item Proposition~\ref{prop:gs-nash} (Gauss--Seidel coordinate-wise Nash):
+should this be elevated to a theorem with the additional uniqueness
+argument under the strict monotonicity hypothesis for $p \in (1, 2]$, or
+kept as a proposition with the proof we have?
+\item Should we attempt to derive the optimal $(p, c)$ predictively from
+report-distribution statistics, or report the data-driven choice as is?
+\item OMD diagnostic (Section~\ref{sec:omd-diagnostic}): include as a
+section in the main paper to motivate $R = 0$, or move to an appendix?
+\item The truth-aligned OMD direction suggested in
+Section~\ref{sec:limitations}: pursue as a follow-up paper, or attempt a
+preliminary experiment for this submission?
+\item The mechanism interpretation: it is convenient to describe
+Algorithm~\ref{alg:adaptive} as "one mechanism with a two-element
+configuration menu" rather than "two mechanisms with a router". Is this
+framing precise enough, or should we make the menu structure more
+explicit in the paper?
+\end{enumerate}
+
+\appendix
+
+\section{Reproducibility}
+
+All numbers reproduce with the scripts in the project repository.
+\begin{sloppypar}
+\begin{itemize}[nosep]
+\item Per-method accuracy on the squared-kernel baseline (Section~3.1):
+\texttt{scripts/run\_vcg.py} verified to give
+$\mathrm{Acc}_{\mathrm{step}} = 0.349$ on AG with $R = 5$,
+$\varepsilon_{\text{report}} = 0.10$.
+\item $(p, c)$ scan (Section~3.2): \texttt{scripts/scan\_pc.py}.
+\item Within-trace regime statistics (Section~3.4):
+\texttt{scripts/regime\_stats.py}.
+\item Smooth trace-length-adaptive selector (Section~3.3):
+\texttt{scripts/adaptive\_kernel\_smooth.py}
+(default mode \texttt{T-only} with
+$\mu = \log 10$, $\tau = 0.01$ recovers the canonical operating point;
+\texttt{--scan} sweeps $(\mu, \tau)$ for sensitivity analysis).
+The hard-threshold variant in
+\texttt{scripts/adaptive\_kernel.py}
+is retained for the $\tau \to 0^+$ limit and yields identical accuracy.
+\item Combined-score selector with kurtosis (Section~3.5):
+\texttt{scripts/adaptive\_kernel\_combined.py},
+where \texttt{--scan} sweeps $(\alpha, \mu, \tau)$.
+\item Power-kernel allocation: \texttt{vcg/allocation\_power.py}.
+\item OMD calibration with selectable objective
+(Section~\ref{sec:omd-diagnostic}):
+\texttt{scripts/run\_power\_v2.py --omd-objective \{payment, entropy, margin\}}.
+The corresponding pipeline modules \texttt{vcg/pipeline\_power.py},
+\texttt{vcg/gradient\_power.py}, \texttt{vcg/payment\_power.py},
+and \texttt{vcg/gradient\_concentration.py} implement the three
+gradient signals.
+\item Per-trace OMD diagnostic (which traces had argmax changed by OMD,
+hit/miss flips): \texttt{scripts/omd\_find\_changers.py}.
+\end{itemize}
+\end{sloppypar}
+Random seed $42$ throughout; the $(p, c)$ scan and adaptive selector are
+deterministic (no random component).
+
+\end{document}

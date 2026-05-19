@@ -1,0 +1,19 @@
+{
+  "subset": "Algorithm-Generated",
+  "report_dir": "D:\\code\\VDA_experiment\\data\\reports\\Algorithm-Generated_hybrid_v2",
+  "n_traces": 126,
+  "skipped": 0,
+  "kernel": "Power(p=1.75, c=1.0)",
+  "c": 1.0,
+  "p": 1.75,
+  "R": 5,
+  "c_t": 0.5,
+  "eta_0": 0.3,
+  "eta_p": 0.7,
+  "eps": 1e-06,
+  "report_eps": 0.1,
+  "omd_direction": "ascent",
+  "Acc_step": 0.3253968253968254,
+  "Acc_agent": 0.48412698412698413,
+  "Acc_joint": 0.24603174603174602
+}
